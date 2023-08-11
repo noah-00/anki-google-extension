@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Anki Extension",
   "action": {
-    "default_popup": "popup.html"
+    "default_popup": "index.html"
   },
   "permissions": ["activeTab"]
 }

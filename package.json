@@ -3,11 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "build": "npm run prep",
+    "prep": "npm run exp && ts-node out.ts",
+    "exp": "next build && next export",
     "dev": "next dev",
-    "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "build:extension": "next build && next export && web-ext build --source-dir=out --artifacts-dir=extension-dist"
+    "lint": "next lint"
   },
   "dependencies": {
     "@types/node": "20.4.9",
@@ -21,7 +22,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "tailwindcss": "3.3.3",
-    "typescript": "5.1.6",
-    "web-ext": "^7.6.2"
+    "ts-node": "^10.9.1",
+    "typescript": "5.1.6"
   }
 }
