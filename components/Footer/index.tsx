@@ -1,4 +1,4 @@
-export default function Footer() {
+const Footer = () => {
   return (
     <footer className="p-2">
       <a href="/" target="_blank" rel="noopener noreferrer">
@@ -6,4 +6,6 @@ export default function Footer() {
       </a>
     </footer>
   );
-}
+};
+
+export default Footer;

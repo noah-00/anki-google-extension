@@ -1,4 +1,6 @@
-export default function Index({ navigateToPage }) {
+import { IndexProps } from "@/types";
+
+const Index = ({ navigateToPage }: IndexProps) => {
   return (
     <div>
       <main>
@@ -8,4 +10,6 @@ export default function Index({ navigateToPage }) {
       </main>
     </div>
   );
-}
+};
+
+export default Index;
