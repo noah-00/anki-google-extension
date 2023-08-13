@@ -1,20 +1,17 @@
-import React, { useState } from "react";
 import Index from "../../components/Index";
 import New from "../../components/New";
 import { PageType } from "@/types";
+import { PAGE_TYPE_INDEX, PAGE_TYPE_NEW } from "@/utils/const";
 
-export default function Home() {
-  const [activePage, setActivePage] = useState<PageType>("index"); // activePageの初期値に型を指定
+interface HomeProps {
+  activePage: PageType;
+}
 
-  const navigateToPage = (page: PageType) => {
-    // 引数に型を指定
-    setActivePage(page);
-  };
-
+export default function Home({ activePage }: HomeProps) {
   return (
-    <>
-      {activePage === "index" && <Index navigateToPage={navigateToPage} />}
-      {activePage === "new" && <New navigateToPage={navigateToPage} />}
-    </>
+    <div>
+      {activePage === PAGE_TYPE_INDEX && <Index />}
+      {activePage === PAGE_TYPE_NEW && <New />}
+    </div>
   );
 }
