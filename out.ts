@@ -4,7 +4,6 @@ const fs = require("fs");
 const glob = require("glob");
 
 const files = glob.sync("out/**/*.html");
-console.log(files);
 files.forEach((file: any) => {
   const content = fs.readFileSync(file, "utf-8");
   const modifiedContent = content.replace(/\/_next/g, "./myNext");
