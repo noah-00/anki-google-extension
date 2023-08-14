@@ -1,12 +1,9 @@
 import { PAGE_TYPE_INDEX, PAGE_TYPE_NEW } from "@/utils/const";
-import { PageType } from "@/types";
+import { useTabs } from "@/context/tabs";
 
-interface HeaderProps {
-  navigateToPage: (page: PageType) => void;
-  activePage: PageType;
-}
+const Header = () => {
+  const { activePage, handleSetActivePage } = useTabs();
 
-const Header = ({ navigateToPage, activePage }: HeaderProps) => {
   return (
     <>
       <header className="w-96">
@@ -15,21 +12,21 @@ const Header = ({ navigateToPage, activePage }: HeaderProps) => {
           <div
             // className="py-2 px-10 mr-2 text-blue-500 bg-slate-200 border-b-2 border-blue-500 cursor-pointer"
             className={`py-2 px-10 mr-2 cursor-pointer  ${
-              activePage === "index"
+              activePage === PAGE_TYPE_INDEX
                 ? "text-blue-500 bg-slate-200 border-b-2 border-blue-500"
                 : null
             }`}
-            onClick={() => navigateToPage(PAGE_TYPE_INDEX)}
+            onClick={() => handleSetActivePage(PAGE_TYPE_INDEX)}
           >
             index
           </div>
           <div
             className={`py-2 px-10 mr-2 cursor-pointer  ${
-              activePage === "new"
+              activePage === PAGE_TYPE_NEW
                 ? "text-blue-500 bg-slate-200 border-b-2 border-blue-500"
                 : null
             }`}
-            onClick={() => navigateToPage(PAGE_TYPE_NEW)}
+            onClick={() => handleSetActivePage(PAGE_TYPE_NEW)}
           >
             new
           </div>
