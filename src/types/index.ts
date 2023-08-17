@@ -1,3 +1,3 @@
-import { PAGE_TYPE_INDEX, PAGE_TYPE_NEW } from "@/utils/const";
+import { PAGE_TYPE_ADD, PAGE_TYPE_SETTING } from "@/utils/const";
 
-export type PageType = typeof PAGE_TYPE_INDEX | typeof PAGE_TYPE_NEW;
+export type PageType = typeof PAGE_TYPE_ADD | typeof PAGE_TYPE_SETTING;

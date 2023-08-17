@@ -1,5 +1,5 @@
 import { PageType } from "@/types";
-import { PAGE_TYPE_INDEX } from "@/utils/const";
+import { PAGE_TYPE_ADD } from "@/utils/const";
 import React, { ReactNode, useContext, useState } from "react";
 
 interface TabsProviderProps {
@@ -12,7 +12,7 @@ interface TabsContextType {
 }
 
 const TabsContext = React.createContext<TabsContextType>({
-  activePage: PAGE_TYPE_INDEX,
+  activePage: PAGE_TYPE_ADD,
   handleSetActivePage: () => {},
 });
 
@@ -21,7 +21,7 @@ export const useTabs = () => {
 };
 
 export const TabsProvider = ({ children }: TabsProviderProps) => {
-  const [activePage, setActivePage] = useState<PageType>(PAGE_TYPE_INDEX); // activePageの初期値に型を指定
+  const [activePage, setActivePage] = useState<PageType>(PAGE_TYPE_ADD); // activePageの初期値に型を指定
 
   const handleSetActivePage = async (currentPagePath: PageType) => {
     setActivePage(currentPagePath);

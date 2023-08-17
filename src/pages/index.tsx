@@ -1,17 +1,17 @@
 import { useTabs } from "@/context/tabs";
 
-import Index from "../../components/Index";
-import New from "../../components/New";
+import Add from "../components/Add";
+import Setting from "../components/Setting";
 
-import { PAGE_TYPE_INDEX, PAGE_TYPE_NEW } from "@/utils/const";
+import { PAGE_TYPE_ADD, PAGE_TYPE_SETTING } from "@/utils/const";
 
 export default function Home() {
   const { activePage } = useTabs();
 
   return (
-    <div>
-      {activePage === PAGE_TYPE_INDEX && <Index />}
-      {activePage === PAGE_TYPE_NEW && <New />}
+    <div className="px-4 my-2">
+      {activePage === PAGE_TYPE_ADD && <Add />}
+      {activePage === PAGE_TYPE_SETTING && <Setting />}
     </div>
   );
 }
