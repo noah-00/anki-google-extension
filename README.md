@@ -1,1 +1,1 @@
-ANKI-GOOGLE-EXTENSION
+Anki Quicker
