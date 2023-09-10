@@ -1,19 +1,54 @@
 import React, { useEffect, useState } from "react";
 import { apiAnkiClient, setJsonToAnki } from "@/utils/functions";
-import { ACTION_DECK_NAMES, ACTION_REQUEST_PERMISSON } from "@/utils/const";
+import {
+  ACTION_DECK_NAMES,
+  ACTION_REQUEST_ADD_CARD,
+  ACTION_REQUEST_PERMISSON,
+  ADD_BACK_STEP,
+  ADD_FRONT_STEP,
+  CHOOSE_WORD_STEP,
+  VERSION_6,
+} from "@/utils/const";
+import { DecksType, TypeAddForm, UnknowWord } from "@/types";
 
-type Decks = string[];
+import AddForm from "./addForm";
+import ChooseWord from "./chooseWord";
+import AddBackCard from "./addBackCard";
+import StepBar from "./stepBar";
+
+const initialCard = {
+  deck: "",
+  content: "",
+  backContent: "",
+};
 
 const Index = () => {
-  const [decks, setDecks] = useState<Decks>([]);
+  const [decks, setDecks] = useState<DecksType>([]);
+  const [currentStep, setCurrentStep] = useState(ADD_FRONT_STEP);
+  const [card, setCard] = useState(initialCard);
+  const [unknowWords, setUnknowWords] = useState<UnknowWord[]>([]);
+  const [meanigsOfunknownWords, setMeanigsOfunknownWords] = useState(
+    unknowWords.map(() => "")
+  );
+
+  useEffect(() => {
+    handleSetDeck();
+  }, []);
+
+  useEffect(() => {
+    setUnknowWords([]);
+  }, [card.content]);
+
+  const reset = () => {
+    setCard(initialCard);
+    setUnknowWords([]);
+  };
 
   const handleSetDeck = async (): Promise<void> => {
     try {
-      await apiAnkiClient.post("/", setJsonToAnki(ACTION_REQUEST_PERMISSON, 6));
-
       const response = await apiAnkiClient.post(
         "/",
-        setJsonToAnki(ACTION_DECK_NAMES, 6)
+        setJsonToAnki(ACTION_DECK_NAMES, VERSION_6)
       );
       const { data } = response;
       if (data.result) {
@@ -24,26 +59,103 @@ const Index = () => {
     }
   };
 
-  useEffect(() => {
-    handleSetDeck();
-  }, []);
+  const handleAddFrontCard = (data: TypeAddForm) => {
+    setCard((prevCard) => ({
+      ...prevCard,
+      content: data.content,
+      deck: data.deck,
+    }));
+    setCurrentStep(CHOOSE_WORD_STEP);
+  };
+
+  const addUnderlineText = (text: string, positions: any[]): string => {
+    let resultText = "";
+    let lastEnd = 0;
+
+    positions.forEach((position, i) => {
+      // Add text before the start position
+      resultText += text.slice(lastEnd, position.startPostion);
+      // Add the underlined text
+      resultText += `<u>${i + 1}.${text.slice(
+        position.startPostion,
+        position.endPostion
+      )}</u>`;
+      lastEnd = position.endPostion;
+    });
+    // Add remaining text
+    resultText += text.slice(lastEnd);
+
+    return resultText;
+  };
+
+  const handleChooseWord = () => {
+    // Change selected words to ascending order
+    setUnknowWords(unknowWords.sort((a, b) => a.startPostion - b.startPostion));
+    setCurrentStep(ADD_BACK_STEP);
+  };
+
+  const addCard = async () => {
+    const params = {
+      notes: [
+        {
+          deckName: card.deck,
+          modelName: "Basic",
+          fields: {
+            Front: addUnderlineText(card.content, unknowWords),
+            Back: meanigsOfunknownWords
+              .map((item, index) => `${index + 1}.${item}`)
+              .join("<br>"),
+          },
+        },
+      ],
+    };
+
+    await apiAnkiClient.post(
+      "/",
+      setJsonToAnki(ACTION_REQUEST_ADD_CARD, VERSION_6, params)
+    );
+  };
+
+  const handleAddCard = async () => {
+    await addCard();
+    reset();
+    setCurrentStep(ADD_FRONT_STEP);
+  };
+
+  const isCrrentStep = (crrentIndex: number) => {
+    return crrentIndex === currentStep;
+  };
 
   return (
-    <div>
-      <label htmlFor="countries" className="block mb-2 text-sm font-medium">
-        current deck :
-      </label>
-      <select
-        id="countries"
-        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-      >
-        {decks?.map((deck, i) => (
-          <option value="US" key={i}>
-            {deck}
-          </option>
-        ))}
-      </select>
-    </div>
+    <>
+      <StepBar isCrrentStep={isCrrentStep} />
+      {currentStep === ADD_FRONT_STEP && (
+        <AddForm
+          decks={decks}
+          card={card}
+          handleAddFrontCard={handleAddFrontCard}
+        />
+      )}
+      {currentStep === CHOOSE_WORD_STEP && (
+        <ChooseWord
+          card={card}
+          handleChooseWord={handleChooseWord}
+          unknowWords={unknowWords}
+          setUnknowWords={setUnknowWords}
+          setCurrentStep={setCurrentStep}
+        />
+      )}
+      {currentStep === ADD_BACK_STEP && (
+        <AddBackCard
+          card={card}
+          handleAddCard={handleAddCard}
+          unknowWords={unknowWords}
+          setMeanigsOfunknownWords={setMeanigsOfunknownWords}
+          meanigsOfunknownWords={meanigsOfunknownWords}
+          setCurrentStep={setCurrentStep}
+        />
+      )}
+    </>
   );
 };
 

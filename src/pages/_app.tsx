@@ -8,7 +8,7 @@ import "../../src/styles/globals.css";
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <TabsProvider>
-      <div className="w-96">
+      <div className="w-96 text-sm">
         <Header />
         <Component {...pageProps} />
         <Footer />
