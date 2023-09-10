@@ -8,7 +8,7 @@ import {
   ADD_FRONT_STEP,
   CHOOSE_WORD_STEP,
   VERSION_6,
-} from "@/utils/const";
+} from "@/utils/Const";
 import { DecksType, TypeAddForm, UnknowWord } from "@/types";
 
 import AddForm from "./addForm";

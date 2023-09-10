@@ -1,5 +1,5 @@
 import { PageType } from "@/types";
-import { PAGE_TYPE_ADD } from "@/utils/const";
+import { PAGE_TYPE_ADD } from "@/utils/Const";
 import React, { ReactNode, useContext, useState } from "react";
 
 interface TabsProviderProps {

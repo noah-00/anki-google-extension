@@ -1,4 +1,4 @@
-import { ADD_BACK_STEP, ADD_CARD_STEP_DESCRIPTION } from "@/utils/const";
+import { ADD_BACK_STEP, ADD_CARD_STEP_DESCRIPTION } from "@/utils/Const";
 import React from "react";
 
 type StepBarProps = {

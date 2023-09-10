@@ -1,4 +1,4 @@
-import { PAGE_TYPE_ADD, PAGE_TYPE_SETTING } from "@/utils/const";
+import { PAGE_TYPE_ADD, PAGE_TYPE_SETTING } from "@/utils/Const";
 
 export type PageType = typeof PAGE_TYPE_ADD | typeof PAGE_TYPE_SETTING;
 export type DecksType = string[];
