@@ -1,4 +1,4 @@
-import { PAGE_TYPE_ADD, PAGE_TYPE_SETTING } from "@/utils/const";
+import { PAGE_TYPE_ADD, PAGE_TYPE_SETTING } from "@/utils/Const";
 import { useTabs } from "@/context/tabs";
 
 const Header = () => {

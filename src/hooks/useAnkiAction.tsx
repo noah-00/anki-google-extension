@@ -1,4 +1,4 @@
-import { ACTION_REQUEST_PERMISSON, VERSION_6 } from "@/utils/const";
+import { ACTION_REQUEST_PERMISSON, VERSION_6 } from "@/utils/Const";
 import { apiAnkiClient, setJsonToAnki } from "@/utils/functions";
 
 const getAnkiPermisson = async () => {

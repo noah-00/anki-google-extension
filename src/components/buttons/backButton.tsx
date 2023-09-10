@@ -1,4 +1,4 @@
-import { ADD_FRONT_STEP } from "@/utils/const";
+import { ADD_FRONT_STEP } from "@/utils/Const";
 import React from "react";
 
 type BackButtonProps = {

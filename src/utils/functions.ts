@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ANKI_LOCAL_URL } from "./const";
+import { ANKI_LOCAL_URL } from "./Const";
 
 export const apiAnkiClient = axios.create({
   baseURL: ANKI_LOCAL_URL,

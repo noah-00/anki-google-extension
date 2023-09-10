@@ -11,7 +11,7 @@ import {
   PAGE_TYPE_SETTING,
   STATUS_NOT_PERMITTED,
   STATUS_PERMITTED,
-} from "@/utils/const";
+} from "@/utils/Const";
 import { useEffect, useState } from "react";
 import PermissionNotice from "@/components/Add/permissionNotice";
 
