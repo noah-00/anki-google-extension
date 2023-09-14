@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Anki Quicker",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Anki Quicker was developed for users of the study support application called Anki.",
   "action": {
     "default_popup": "index.html"
