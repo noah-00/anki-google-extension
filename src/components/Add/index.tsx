@@ -10,11 +10,13 @@ import {
   VERSION_6,
 } from "@/utils/Const";
 import { DecksType, TypeAddForm, UnknowWord } from "@/types";
+import { toast } from "react-toastify";
 
 import AddForm from "./addForm";
 import ChooseWord from "./chooseWord";
 import AddBackCard from "./addBackCard";
 import StepBar from "./stepBar";
+import { errorParams, successParams } from "@/utils/toast";
 
 const initialCard = {
   deck: "",
@@ -110,10 +112,16 @@ const Index = () => {
       ],
     };
 
-    await apiAnkiClient.post(
-      "/",
-      setJsonToAnki(ACTION_REQUEST_ADD_CARD, VERSION_6, params)
-    );
+    try {
+      await apiAnkiClient.post(
+        "/",
+        setJsonToAnki(ACTION_REQUEST_ADD_CARD, VERSION_6, params)
+      );
+      toast.success("Add card success!", successParams);
+    } catch (error) {
+      console.error("Error while adding card:", error);
+      toast.error("Error!", errorParams);
+    }
   };
 
   const handleAddCard = async () => {
