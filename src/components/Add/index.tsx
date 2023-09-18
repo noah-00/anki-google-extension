@@ -78,7 +78,7 @@ const Index = () => {
       // Add text before the start position
       resultText += text.slice(lastEnd, position.startPostion);
       // Add the underlined text
-      resultText += `<u>${i + 1}.${text.slice(
+      resultText += `<u style="color: rgb(38, 97, 255);">${i + 1}.${text.slice(
         position.startPostion,
         position.endPostion
       )}</u>`;
