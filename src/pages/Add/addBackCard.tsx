@@ -1,8 +1,8 @@
 import { TypeCard, UnknowWord } from "@/types";
 import { CHOOSE_WORD_STEP } from "@/utils/Const";
 import React, { useEffect } from "react";
-import BackButton from "../buttons/backButton";
-import SubmitButton from "../buttons/submitButton";
+import BackButton from "@/components/buttons/backButton";
+import SubmitButton from "@/components/buttons/submitButton";
 
 type ChooseWordProps = {
   card: TypeCard;

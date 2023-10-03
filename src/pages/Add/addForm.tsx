@@ -1,8 +1,8 @@
 import { DecksType, TypeAddForm, TypeCard } from "@/types";
 import React, { useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import ErrorRequired from "../useForm/errorRequired";
-import SubmitButton from "../buttons/submitButton";
+import ErrorRequired from "@/components/useForm/errorRequired";
+import SubmitButton from "@/components/buttons/submitButton";
 
 interface AddFormProps {
   decks: DecksType;
