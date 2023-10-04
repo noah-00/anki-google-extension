@@ -1,21 +1,31 @@
-import { TypeCard, UnknowWord } from "@/types";
-import { CHOOSE_WORD_STEP } from "@/utils/Const";
+import {
+  ACTION_REQUEST_ADD_CARD,
+  ADD_FRONT_STEP,
+  CHOOSE_WORD_STEP,
+  VERSION_6,
+} from "@/utils/Const";
 import React, { useEffect } from "react";
 import BackButton from "@/components/buttons/backButton";
 import SubmitButton from "@/components/buttons/submitButton";
 
-type ChooseWordProps = {
-  card: TypeCard;
-  handleAddCard: () => void;
-  unknowWords: UnknowWord[];
-  meanigsOfunknownWords: string[];
-  setMeanigsOfunknownWords: React.Dispatch<React.SetStateAction<string[]>>;
-  setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
-};
+import { useAddCardStore } from "@/context/addCardStore";
+import { apiAnkiClient, setJsonToAnki } from "@/utils/functions";
+import { toast } from "react-toastify";
+import { errorParams, successParams } from "@/utils/toast";
 
-export default function AddBackCard(props: ChooseWordProps) {
+export default function AddBackCard() {
+  const {
+    handleSetCurrentStep,
+    unknowWords,
+    meanigsOfunknownWords,
+    handleSetMeanigsOfunknownWords,
+    card,
+    handleResetCard,
+    handleSetUnknowWords,
+  } = useAddCardStore();
+
   useEffect(() => {
-    props.setMeanigsOfunknownWords(props.unknowWords.map(() => ""));
+    handleSetMeanigsOfunknownWords(unknowWords.map(() => ""));
   }, []);
 
   const addUnderline = (text: string, positions: any[]) => {
@@ -36,12 +46,12 @@ export default function AddBackCard(props: ChooseWordProps) {
     return elements;
   };
 
-  const frontCardElements = addUnderline(props.card.content, props.unknowWords);
+  const frontCardElements = addUnderline(card.content, unknowWords);
 
   const handleChange =
     (targetIndex: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
-      props.setMeanigsOfunknownWords(
-        props.meanigsOfunknownWords.map((word, i) => {
+      handleSetMeanigsOfunknownWords(
+        meanigsOfunknownWords.map((word, i) => {
           if (i === targetIndex) {
             return event.target.value;
           }
@@ -49,6 +59,65 @@ export default function AddBackCard(props: ChooseWordProps) {
         })
       );
     };
+
+  const reset = () => {
+    handleResetCard();
+    handleSetUnknowWords([]);
+  };
+
+  const addUnderlineText = (text: string, positions: any[]): string => {
+    let resultText = "";
+    let lastEnd = 0;
+
+    positions.forEach((position, i) => {
+      // Add text before the start position
+      resultText += text.slice(lastEnd, position.startPostion);
+      // Add the underlined text
+      resultText += `<u style="color: rgb(38, 97, 255);">${i + 1}.${text.slice(
+        position.startPostion,
+        position.endPostion
+      )}</u>`;
+      lastEnd = position.endPostion;
+    });
+    // Add remaining text
+    resultText += text.slice(lastEnd);
+
+    return resultText;
+  };
+
+  const addCard = async () => {
+    const params = {
+      notes: [
+        {
+          deckName: card.deck,
+          modelName: "Basic",
+          fields: {
+            Front: addUnderlineText(card.content, unknowWords),
+            Back: meanigsOfunknownWords
+              .map((item, index) => `${index + 1}.${item}`)
+              .join("<br>"),
+          },
+        },
+      ],
+    };
+
+    try {
+      await apiAnkiClient.post(
+        "/",
+        setJsonToAnki(ACTION_REQUEST_ADD_CARD, VERSION_6, params)
+      );
+      toast.success("Add card success!", successParams);
+    } catch (error) {
+      console.error("Error while adding card:", error);
+      toast.error("Error!", errorParams);
+    }
+  };
+
+  const handleAddCard = async () => {
+    await addCard();
+    reset();
+    handleSetCurrentStep(ADD_FRONT_STEP);
+  };
 
   return (
     <>
@@ -60,7 +129,7 @@ export default function AddBackCard(props: ChooseWordProps) {
         <h2 className="border-l-4 border-blue-500 pl-2 my-5 font-medium">
           Enter the meaning of the selected word
         </h2>
-        {props.unknowWords.map((unknowWord, i) => {
+        {unknowWords.map((unknowWord, i) => {
           return (
             <div
               key={i}
@@ -79,12 +148,9 @@ export default function AddBackCard(props: ChooseWordProps) {
       </div>
       <div className="flex justify-between mt-5">
         <BackButton
-          handleClick={() => props.setCurrentStep(CHOOSE_WORD_STEP)}
+          handleClick={() => handleSetCurrentStep(CHOOSE_WORD_STEP)}
         />
-        <SubmitButton
-          handleSubmit={() => props.handleAddCard()}
-          isFinalStep={true}
-        />
+        <SubmitButton handleSubmit={() => handleAddCard()} isFinalStep={true} />
       </div>
     </>
   );

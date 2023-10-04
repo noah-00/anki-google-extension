@@ -1,18 +1,15 @@
-import { TypeCard, UnknowWord } from "@/types";
-import { ADD_FRONT_STEP } from "@/utils/Const";
+import { UnknowWord } from "@/types";
+import { ADD_BACK_STEP, ADD_FRONT_STEP } from "@/utils/Const";
 import React, { useState } from "react";
 import SubmitButton from "@/components/buttons/submitButton";
 import BackButton from "@/components/buttons/backButton";
 
-type ChooseWordProps = {
-  card: TypeCard;
-  handleChooseWord: () => void;
-  unknowWords: UnknowWord[];
-  setUnknowWords: React.Dispatch<React.SetStateAction<UnknowWord[]>>;
-  setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
-};
+import { useAddCardStore } from "@/context/addCardStore";
 
-export default function ChooseWord(props: ChooseWordProps) {
+export default function ChooseWord() {
+  const { handleSetCurrentStep, unknowWords, handleSetUnknowWords, card } =
+    useAddCardStore();
+
   const [isDuplicate, setIsDuplicate] = useState(false);
   const [isNotUnknowWords, setIsNotUnknowWords] = useState(false);
 
@@ -34,7 +31,7 @@ export default function ChooseWord(props: ChooseWordProps) {
 
   const AddUknownWord = (unknowWord: UnknowWord) => {
     if (!isRangeOverlapWithArray(unknowWord)) {
-      props.setUnknowWords([...props.unknowWords, unknowWord]);
+      handleSetUnknowWords([...unknowWords, unknowWord]);
     } else {
       setIsDuplicate(true);
     }
@@ -48,7 +45,7 @@ export default function ChooseWord(props: ChooseWordProps) {
   };
 
   const isRangeOverlapWithArray = (newRange: UnknowWord) => {
-    for (let range of props.unknowWords) {
+    for (let range of unknowWords) {
       if (isOverlapping(newRange, range)) {
         return true;
       }
@@ -57,14 +54,15 @@ export default function ChooseWord(props: ChooseWordProps) {
   };
 
   const handleDelete = (indexToRemove: number) => {
-    props.setUnknowWords(
-      props.unknowWords.filter((_, i) => i !== indexToRemove)
-    );
+    handleSetUnknowWords(unknowWords.filter((_, i) => i !== indexToRemove));
   };
 
   const handleSubmit = () => {
-    if (props.unknowWords.length) {
-      props.handleChooseWord();
+    if (unknowWords.length) {
+      handleSetUnknowWords(
+        unknowWords.sort((a, b) => a.startPostion - b.startPostion)
+      );
+      handleSetCurrentStep(ADD_BACK_STEP);
     } else {
       setIsNotUnknowWords(true);
     }
@@ -79,7 +77,7 @@ export default function ChooseWord(props: ChooseWordProps) {
         onMouseUp={handleOnMouseUp}
         className="border-2 p-2 my-3 rounded-md text-sm"
       >
-        {props.card.content}
+        {card.content}
       </div>
       {isDuplicate ? (
         <p className="text-red-600 text-sm mb-3">
@@ -90,7 +88,7 @@ export default function ChooseWord(props: ChooseWordProps) {
         <h2 className="border-l-4 border-blue-500 pl-2 my-5 font-medium">
           Selected words
         </h2>
-        {props.unknowWords.map((unknowWord, i) => {
+        {unknowWords.map((unknowWord, i) => {
           return (
             <div
               key={i}
@@ -121,7 +119,12 @@ export default function ChooseWord(props: ChooseWordProps) {
         ) : null}
       </div>
       <div className="flex justify-between mt-6">
-        <BackButton handleClick={() => props.setCurrentStep(ADD_FRONT_STEP)} />
+        <BackButton
+          handleClick={() => {
+            handleSetCurrentStep(ADD_FRONT_STEP);
+            handleSetUnknowWords([]);
+          }}
+        />
         <SubmitButton handleSubmit={handleSubmit} />
       </div>
     </>
