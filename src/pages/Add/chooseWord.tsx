@@ -1,10 +1,11 @@
-import { UnknowWord } from "@/types";
-import { ADD_BACK_STEP, ADD_FRONT_STEP } from "@/utils/Const";
 import React, { useState } from "react";
+import { useAddCardStore } from "@/context/addCardStore";
+
 import SubmitButton from "@/components/buttons/submitButton";
 import BackButton from "@/components/buttons/backButton";
 
-import { useAddCardStore } from "@/context/addCardStore";
+import { UnknowWord } from "@/types";
+import { ADD_BACK_STEP, ADD_FRONT_STEP } from "@/utils/Const";
 
 export default function ChooseWord() {
   const { handleSetCurrentStep, unknowWords, handleSetUnknowWords, card } =
@@ -18,11 +19,17 @@ export default function ChooseWord() {
     setIsNotUnknowWords(false);
 
     const selectinon = window.getSelection();
+
     if (selectinon !== null && String(selectinon)) {
+      const rangeSelectedWord = [
+        selectinon.anchorOffset,
+        selectinon.focusOffset,
+      ].sort((a, b) => a - b);
+
       const unknowWord = {
         word: String(selectinon),
-        startPostion: selectinon.anchorOffset,
-        endPostion: selectinon.focusOffset,
+        startPostion: rangeSelectedWord[0],
+        endPostion: rangeSelectedWord[1],
       };
 
       AddUknownWord(unknowWord);
@@ -30,6 +37,13 @@ export default function ChooseWord() {
   };
 
   const AddUknownWord = (unknowWord: UnknowWord) => {
+    // validate
+
+    // if user select nothing
+    if (unknowWord.startPostion === 0 && unknowWord.endPostion === 0)
+      return setIsDuplicate(true);
+    if (!unknowWord.word.trim()) return;
+
     if (!isRangeOverlapWithArray(unknowWord)) {
       handleSetUnknowWords([...unknowWords, unknowWord]);
     } else {
@@ -54,6 +68,7 @@ export default function ChooseWord() {
   };
 
   const handleDelete = (indexToRemove: number) => {
+    setIsDuplicate(false);
     handleSetUnknowWords(unknowWords.filter((_, i) => i !== indexToRemove));
   };
 
@@ -66,6 +81,11 @@ export default function ChooseWord() {
     } else {
       setIsNotUnknowWords(true);
     }
+  };
+
+  const handleBack = () => {
+    handleSetCurrentStep(ADD_FRONT_STEP);
+    handleSetUnknowWords([]);
   };
 
   return (
@@ -81,7 +101,7 @@ export default function ChooseWord() {
       </div>
       {isDuplicate ? (
         <p className="text-red-600 text-sm mb-3">
-          Selected words are duplicated. Please delete and try again.
+          Selected words are duplicated. Please delete it and try again.
         </p>
       ) : null}
       <div>
@@ -119,12 +139,7 @@ export default function ChooseWord() {
         ) : null}
       </div>
       <div className="flex justify-between mt-6">
-        <BackButton
-          handleClick={() => {
-            handleSetCurrentStep(ADD_FRONT_STEP);
-            handleSetUnknowWords([]);
-          }}
-        />
+        <BackButton handleClick={handleBack} />
         <SubmitButton handleSubmit={handleSubmit} />
       </div>
     </>

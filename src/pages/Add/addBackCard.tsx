@@ -1,17 +1,12 @@
-import {
-  ACTION_REQUEST_ADD_CARD,
-  ADD_FRONT_STEP,
-  CHOOSE_WORD_STEP,
-  VERSION_6,
-} from "@/utils/Const";
+import { ADD_FRONT_STEP, CHOOSE_WORD_STEP } from "@/utils/Const";
 import React, { useEffect } from "react";
 import BackButton from "@/components/buttons/backButton";
 import SubmitButton from "@/components/buttons/submitButton";
 
 import { useAddCardStore } from "@/context/addCardStore";
-import { apiAnkiClient, setJsonToAnki } from "@/utils/functions";
-import { toast } from "react-toastify";
-import { errorParams, successParams } from "@/utils/toast";
+import { useAnkiAction } from "@/hooks/useAnkiAction";
+
+import { useGoogleStorage } from "@/hooks/useGoogleStorage";
 
 export default function AddBackCard() {
   const {
@@ -24,9 +19,13 @@ export default function AddBackCard() {
     handleSetUnknowWords,
   } = useAddCardStore();
 
+  const { resetLocalStorage } = useGoogleStorage();
+  const { addCard } = useAnkiAction();
+
   useEffect(() => {
-    handleSetMeanigsOfunknownWords(unknowWords.map(() => ""));
-  }, []);
+    if (meanigsOfunknownWords.length) return;
+    else handleSetMeanigsOfunknownWords(unknowWords.map(() => ""));
+  }, [unknowWords]);
 
   const addUnderline = (text: string, positions: any[]) => {
     let elements = [];
@@ -85,7 +84,7 @@ export default function AddBackCard() {
     return resultText;
   };
 
-  const addCard = async () => {
+  const handleAddCard = async () => {
     const params = {
       notes: [
         {
@@ -101,22 +100,15 @@ export default function AddBackCard() {
       ],
     };
 
-    try {
-      await apiAnkiClient.post(
-        "/",
-        setJsonToAnki(ACTION_REQUEST_ADD_CARD, VERSION_6, params)
-      );
-      toast.success("Add card success!", successParams);
-    } catch (error) {
-      console.error("Error while adding card:", error);
-      toast.error("Error!", errorParams);
-    }
-  };
-
-  const handleAddCard = async () => {
-    await addCard();
+    await addCard(params);
+    await resetLocalStorage();
     reset();
     handleSetCurrentStep(ADD_FRONT_STEP);
+  };
+
+  const handleBack = () => {
+    handleSetCurrentStep(CHOOSE_WORD_STEP);
+    handleSetMeanigsOfunknownWords([]);
   };
 
   return (
@@ -141,16 +133,15 @@ export default function AddBackCard() {
                 className="bg-gray-50 border border-gray-300 text-gray-500 text-sm rounded-r-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                 placeholder={unknowWord.word}
                 onChange={handleChange(i)}
+                value={meanigsOfunknownWords[i]}
               ></input>
             </div>
           );
         })}
       </div>
       <div className="flex justify-between mt-5">
-        <BackButton
-          handleClick={() => handleSetCurrentStep(CHOOSE_WORD_STEP)}
-        />
-        <SubmitButton handleSubmit={() => handleAddCard()} isFinalStep={true} />
+        <BackButton handleClick={handleBack} />
+        <SubmitButton handleSubmit={handleAddCard} isFinalStep={true} />
       </div>
     </>
   );

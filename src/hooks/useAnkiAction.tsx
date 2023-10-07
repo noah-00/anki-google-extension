@@ -1,9 +1,13 @@
+import { TypeAddCardParams } from "@/types";
 import {
   ACTION_DECK_NAMES,
+  ACTION_REQUEST_ADD_CARD,
   ACTION_REQUEST_PERMISSON,
   VERSION_6,
 } from "@/utils/Const";
 import { apiAnkiClient, setJsonToAnki } from "@/utils/functions";
+import { errorParams, successParams } from "@/utils/toast";
+import { toast } from "react-toastify";
 
 const getAnkiPermisson = async () => {
   try {
@@ -32,6 +36,19 @@ const getDecks = async () => {
   }
 };
 
+const addCard = async (params: TypeAddCardParams) => {
+  try {
+    await apiAnkiClient.post(
+      "/",
+      setJsonToAnki(ACTION_REQUEST_ADD_CARD, VERSION_6, params)
+    );
+    toast.success("Add card success!", successParams);
+  } catch (error) {
+    console.error("Error while adding card:", error);
+    toast.error("Error!", errorParams);
+  }
+};
+
 export const useAnkiAction = () => {
-  return { getAnkiPermisson, getDecks };
+  return { getAnkiPermisson, getDecks, addCard };
 };

@@ -13,19 +13,24 @@ export type AddCardStepType =
   | typeof CHOOSE_WORD_STEP
   | typeof ADD_BACK_STEP;
 
-export type TypeAddForm = {
-  content: string;
-  deck: string;
-};
-
 export type TypeCard = {
   content: string;
   deck: string;
-  backContent: string;
 };
 
 export type UnknowWord = {
   word: string;
   startPostion: number;
   endPostion: number;
+};
+
+export type TypeAddCardParams = {
+  notes: {
+    deckName: string;
+    modelName: string;
+    fields: {
+      Front: string;
+      Back: string;
+    };
+  }[];
 };
