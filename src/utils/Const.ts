@@ -14,6 +14,9 @@ export const ADD_CARD_STEP_DESCRIPTION = [
   "Enter back card",
 ];
 
+export const FORM_KEY_DECK = "deck";
+export const FORM_KEY_CONTENT = "content";
+
 // ANKI ACTION
 export const ACTION_DECK_NAMES = "deckNames";
 export const ACTION_REQUEST_PERMISSON = "requestPermission";
@@ -24,3 +27,9 @@ export const ANKI_PERMISSON_GRANTED = "granted";
 export const VERSION_6 = 6;
 
 export const ANKI_LOCAL_URL = "http://127.0.0.1:8765";
+
+// GOOGLE STORAGE KEY
+export const STORAGE_KEY_CURRENT_STEP = "currentStep";
+export const STORAGE_KEY_CARD = "card";
+export const STORAGE_KEY_UNKNOW_WORDS = "unknowWords";
+export const STORAGE_KEY_MEANINGS_WORDS = "meanigsOfunknownWords";
