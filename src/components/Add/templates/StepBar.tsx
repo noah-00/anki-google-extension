@@ -1,7 +1,7 @@
-import { ADD_BACK_STEP, ADD_CARD_STEP_DESCRIPTION } from "@/utils/Const";
 import React from "react";
 
 import { useAddCardStore } from "@/context/addCardStore";
+import { ADD_BACK_STEP, ADD_CARD_STEP_DESCRIPTION } from "@/utils/Const";
 
 export default function StepBar() {
   const { isCrrentStep } = useAddCardStore();

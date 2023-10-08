@@ -1,31 +1,28 @@
 import React, { useEffect, useState } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler, Form } from "react-hook-form";
+
+import ErrorAlert from "@/components/common/parts/ErrorAlert";
+import Label from "@/components/common/parts/Label";
+import SubmitButton from "@/components/common/parts/submitButton";
+
 import { useAddCardStore } from "@/context/addCardStore";
 import { useAnkiAction } from "@/hooks/useAnkiAction";
-
-import ErrorRequired from "@/components/useForm/errorRequired";
-import SubmitButton from "@/components/buttons/submitButton";
-
-import {
-  CHOOSE_WORD_STEP,
-  FORM_KEY_CONTENT,
-  FORM_KEY_DECK,
-} from "@/utils/Const";
 import { DecksType, TypeCard } from "@/types";
+import { CHOOSE_WORD_STEP, FORM_KEY_CONTENT, FORM_KEY_DECK } from "@/utils/Const";
 
 export default function AddForm() {
   const { handleAddFrontCard, handleSetCurrentStep, card } = useAddCardStore();
   const { getDecks } = useAnkiAction();
-
-  const [decks, setDecks] = useState<DecksType>([]);
-
   const {
     register,
     handleSubmit,
     setValue,
     formState: { errors },
-    watch,
+    watch
   } = useForm<TypeCard>();
+
+  // get deck data from local Anki app
+  const [decks, setDecks] = useState<DecksType>([]);
 
   useEffect(() => {
     handleSetDeck();
@@ -42,7 +39,7 @@ export default function AddForm() {
 
     const newCard: TypeCard = {
       content: card.content,
-      deck: card.deck,
+      deck: card.deck
     };
 
     if (watch(FORM_KEY_CONTENT)) newCard.content = watch(FORM_KEY_CONTENT);
@@ -69,12 +66,7 @@ export default function AddForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <label
-        htmlFor="deck"
-        className="block my-5 font-medium border-l-4 border-blue-500 pl-2"
-      >
-        Current Deck
-      </label>
+      <Label htmlFor="deck">Current Deck</Label>
       <select
         {...register(FORM_KEY_DECK, { required: true })}
         id="deck"
@@ -87,21 +79,17 @@ export default function AddForm() {
           </option>
         ))}
       </select>
-      {errors.deck && <ErrorRequired />}
+      {errors.deck && <ErrorAlert errorMessage="This field is required" />}
 
-      <label
-        htmlFor="front"
-        className="block my-5 font-medium mt-4 border-l-4 border-blue-500 pl-2"
-      >
-        Front
-      </label>
+      <Label htmlFor="front">Front</Label>
       <textarea
         id="front"
         className="h-52 block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
         placeholder="Front Text"
         {...register(FORM_KEY_CONTENT, { required: true })}
       ></textarea>
-      {errors.content && <ErrorRequired />}
+      {errors.content && <ErrorAlert errorMessage="This field is required" />}
+
       <div className="flex justify-end mt-4">
         <SubmitButton />
       </div>

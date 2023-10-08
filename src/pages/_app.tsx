@@ -1,12 +1,13 @@
-import type { AppProps } from "next/app";
-import Footer from "../components/Footer";
-import Header from "../components/Header";
-import { TabsProvider } from "@/context/tabs";
-import { AddCardStoreProvider } from "@/context/addCardStore";
 import { ToastContainer } from "react-toastify";
 
-import "react-toastify/dist/ReactToastify.css";
+import Footer from "@/components/common/templates/Footer";
+import Header from "@/components/common/templates/Header";
 
+import { AddCardStoreProvider } from "@/context/addCardStore";
+import { TabsProvider } from "@/context/tabs";
+
+import type { AppProps } from "next/app";
+import "react-toastify/dist/ReactToastify.css";
 import "../../src/styles/globals.css";
 
 export default function App({ Component, pageProps }: AppProps) {

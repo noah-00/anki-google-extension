@@ -1,19 +1,18 @@
-import { useTabs } from "@/context/tabs";
+import { useEffect, useState } from "react";
 
+import PermissionNotice from "@/components/common/parts/permissionNotice";
 import Add from "@/pages/Add/index";
 import Setting from "@/pages/Setting";
 
+import { useTabs } from "@/context/tabs";
 import { useAnkiAction } from "@/hooks/useAnkiAction";
-
 import {
   ANKI_PERMISSON_GRANTED,
   PAGE_TYPE_ADD,
   PAGE_TYPE_SETTING,
   STATUS_NOT_PERMITTED,
-  STATUS_PERMITTED,
+  STATUS_PERMITTED
 } from "@/utils/Const";
-import { useEffect, useState } from "react";
-import PermissionNotice from "@/components/permissionNotice";
 
 export default function Index() {
   const { activePage, handleSetActivePage } = useTabs();

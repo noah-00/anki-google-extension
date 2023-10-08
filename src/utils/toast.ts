@@ -7,7 +7,7 @@ export const successParams: ToastOptions<{}> = {
   closeOnClick: true,
   pauseOnHover: true,
   draggable: true,
-  theme: "light",
+  theme: "light"
 };
 
 export const errorParams: ToastOptions<{}> = {
@@ -17,5 +17,5 @@ export const errorParams: ToastOptions<{}> = {
   closeOnClick: true,
   pauseOnHover: true,
   draggable: true,
-  theme: "light",
+  theme: "light"
 };

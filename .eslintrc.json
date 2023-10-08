@@ -1,3 +1,46 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": ["next/core-web-vitals", "plugin:import/recommended", "plugin:import/warnings", "prettier"],
+  "rules": {
+    "comma-dangle": ["error", "never"],
+    "no-multiple-empty-lines": ["error", { "max": 1 }],
+    "no-console": "warn",
+    "react-hooks/exhaustive-deps": "off",
+    "import/order": [
+      "error",
+      {
+        "groups": [
+          "builtin",
+          "external",
+          "internal",
+          [
+            "parent",
+            "sibling"
+          ],
+          "object",
+          "type",
+          "index"
+        ],
+        "newlines-between": "always",
+        "pathGroupsExcludedImportTypes": [
+          "builtin"
+        ],
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        },
+        "pathGroups": [
+          {
+            "pattern": "react**",
+            "group": "external",
+            "position": "before"
+          },
+          {
+            "pattern": "{@/components/**,@/pages/**}",
+            "group": "internal",
+            "position": "before"
+          }
+        ]
+      }
+    ]
+  }
 }

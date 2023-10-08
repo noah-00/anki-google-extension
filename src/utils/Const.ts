@@ -11,7 +11,7 @@ export const STATUS_NOT_PERMITTED = 2;
 export const ADD_CARD_STEP_DESCRIPTION = [
   "Enter front card",
   "Choose unknown word",
-  "Enter back card",
+  "Enter back card"
 ];
 
 export const FORM_KEY_DECK = "deck";

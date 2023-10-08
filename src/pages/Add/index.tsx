@@ -1,12 +1,13 @@
 import React from "react";
-import { ADD_BACK_STEP, ADD_FRONT_STEP, CHOOSE_WORD_STEP } from "@/utils/Const";
 
-import AddForm from "./addForm";
-import ChooseWord from "./chooseWord";
-import AddBackCard from "./addBackCard";
-import StepBar from "@/components/stepBar";
+import StepBar from "@/components/Add/templates/StepBar";
 
 import { useAddCardStore } from "@/context/addCardStore";
+import { ADD_BACK_STEP, ADD_FRONT_STEP, CHOOSE_WORD_STEP } from "@/utils/Const";
+
+import AddBackCard from "./AddBackCard";
+import AddForm from "./AddForm";
+import ChooseWord from "./ChooseWord";
 
 const Index = () => {
   const { currentStep } = useAddCardStore();
