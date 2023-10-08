@@ -13,7 +13,7 @@ import {
   STATUS_PERMITTED,
 } from "@/utils/Const";
 import { useEffect, useState } from "react";
-import PermissionNotice from "@/components/permissionNotice";
+import PermissionNotice from "@/components/common/parts/permissionNotice";
 
 export default function Index() {
   const { activePage, handleSetActivePage } = useTabs();

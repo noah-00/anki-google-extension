@@ -1,7 +1,9 @@
 import { PAGE_TYPE_ADD, PAGE_TYPE_SETTING } from "@/utils/Const";
 import { useTabs } from "@/context/tabs";
 import Image from "next/image";
-import imgSrc from "../../../public/icons/icon-header.png";
+import imgSrc from "@/../public/icons/icon-header.png";
+
+import HeaderNav from "../parts/HeaderNav";
 
 const Header = () => {
   const { activePage, handleSetActivePage } = useTabs();
@@ -20,26 +22,18 @@ const Header = () => {
           <div>Anki Quicker</div>
         </div>
         <div className="flex border-b border-gray-200">
-          <div
-            className={`py-2 px-10 mr-2 cursor-pointer  ${
-              activePage === PAGE_TYPE_ADD
-                ? "text-blue-500 bg-slate-200 border-b-2 border-blue-500"
-                : null
-            }`}
-            onClick={() => handleSetActivePage(PAGE_TYPE_ADD)}
+          <HeaderNav
+            isActive={activePage === PAGE_TYPE_ADD}
+            handleClick={() => handleSetActivePage(PAGE_TYPE_ADD)}
           >
             Add
-          </div>
-          <div
-            className={`py-2 px-10 mr-2 cursor-pointer  ${
-              activePage === PAGE_TYPE_SETTING
-                ? "text-blue-500 bg-slate-200 border-b-2 border-blue-500"
-                : null
-            }`}
-            onClick={() => handleSetActivePage(PAGE_TYPE_SETTING)}
+          </HeaderNav>
+          <HeaderNav
+            isActive={activePage === PAGE_TYPE_SETTING}
+            handleClick={() => handleSetActivePage(PAGE_TYPE_SETTING)}
           >
             Setting
-          </div>
+          </HeaderNav>
         </div>
       </header>
     </>

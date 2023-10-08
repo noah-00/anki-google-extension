@@ -3,14 +3,10 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { useAddCardStore } from "@/context/addCardStore";
 import { useAnkiAction } from "@/hooks/useAnkiAction";
 
-import ErrorRequired from "@/components/useForm/errorRequired";
-import SubmitButton from "@/components/buttons/submitButton";
+import ErrorRequired from "@/components/common/parts/errorRequired";
+import SubmitButton from "@/components/common/parts/submitButton";
 
-import {
-  CHOOSE_WORD_STEP,
-  FORM_KEY_CONTENT,
-  FORM_KEY_DECK,
-} from "@/utils/Const";
+import { CHOOSE_WORD_STEP, FORM_KEY_CONTENT, FORM_KEY_DECK } from "@/utils/Const";
 import { DecksType, TypeCard } from "@/types";
 
 export default function AddForm() {
@@ -69,10 +65,7 @@ export default function AddForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <label
-        htmlFor="deck"
-        className="block my-5 font-medium border-l-4 border-blue-500 pl-2"
-      >
+      <label htmlFor="deck" className="block my-5 font-medium border-l-4 border-blue-500 pl-2">
         Current Deck
       </label>
       <select

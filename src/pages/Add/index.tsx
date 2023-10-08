@@ -4,7 +4,7 @@ import { ADD_BACK_STEP, ADD_FRONT_STEP, CHOOSE_WORD_STEP } from "@/utils/Const";
 import AddForm from "./addForm";
 import ChooseWord from "./chooseWord";
 import AddBackCard from "./addBackCard";
-import StepBar from "@/components/stepBar";
+import StepBar from "@/components/common/templates/stepBar";
 
 import { useAddCardStore } from "@/context/addCardStore";
 

@@ -1,15 +1,14 @@
 import React, { useState } from "react";
 import { useAddCardStore } from "@/context/addCardStore";
 
-import SubmitButton from "@/components/buttons/submitButton";
-import BackButton from "@/components/buttons/backButton";
+import SubmitButton from "@/components/common/parts/submitButton";
+import BackButton from "@/components/common/parts/backButton";
 
 import { UnknowWord } from "@/types";
 import { ADD_BACK_STEP, ADD_FRONT_STEP } from "@/utils/Const";
 
 export default function ChooseWord() {
-  const { handleSetCurrentStep, unknowWords, handleSetUnknowWords, card } =
-    useAddCardStore();
+  const { handleSetCurrentStep, unknowWords, handleSetUnknowWords, card } = useAddCardStore();
 
   const [isDuplicate, setIsDuplicate] = useState(false);
   const [isNotUnknowWords, setIsNotUnknowWords] = useState(false);
@@ -21,10 +20,9 @@ export default function ChooseWord() {
     const selectinon = window.getSelection();
 
     if (selectinon !== null && String(selectinon)) {
-      const rangeSelectedWord = [
-        selectinon.anchorOffset,
-        selectinon.focusOffset,
-      ].sort((a, b) => a - b);
+      const rangeSelectedWord = [selectinon.anchorOffset, selectinon.focusOffset].sort(
+        (a, b) => a - b
+      );
 
       const unknowWord = {
         word: String(selectinon),
@@ -40,8 +38,7 @@ export default function ChooseWord() {
     // validate
 
     // if user select nothing
-    if (unknowWord.startPostion === 0 && unknowWord.endPostion === 0)
-      return setIsDuplicate(true);
+    if (unknowWord.startPostion === 0 && unknowWord.endPostion === 0) return setIsDuplicate(true);
     if (!unknowWord.word.trim()) return;
 
     if (!isRangeOverlapWithArray(unknowWord)) {
@@ -52,10 +49,7 @@ export default function ChooseWord() {
   };
 
   const isOverlapping = (range1: UnknowWord, range2: UnknowWord) => {
-    return !(
-      range1.endPostion <= range2.startPostion ||
-      range2.endPostion <= range1.startPostion
-    );
+    return !(range1.endPostion <= range2.startPostion || range2.endPostion <= range1.startPostion);
   };
 
   const isRangeOverlapWithArray = (newRange: UnknowWord) => {
@@ -74,9 +68,7 @@ export default function ChooseWord() {
 
   const handleSubmit = () => {
     if (unknowWords.length) {
-      handleSetUnknowWords(
-        unknowWords.sort((a, b) => a.startPostion - b.startPostion)
-      );
+      handleSetUnknowWords(unknowWords.sort((a, b) => a.startPostion - b.startPostion));
       handleSetCurrentStep(ADD_BACK_STEP);
     } else {
       setIsNotUnknowWords(true);
@@ -93,10 +85,7 @@ export default function ChooseWord() {
       <h2 className="border-l-4 border-blue-500 pl-2 font-medium my-5">
         Choose your unknown a word
       </h2>
-      <div
-        onMouseUp={handleOnMouseUp}
-        className="border-2 p-2 my-3 rounded-md text-sm"
-      >
+      <div onMouseUp={handleOnMouseUp} className="border-2 p-2 my-3 rounded-md text-sm">
         {card.content}
       </div>
       {isDuplicate ? (
@@ -105,9 +94,7 @@ export default function ChooseWord() {
         </p>
       ) : null}
       <div>
-        <h2 className="border-l-4 border-blue-500 pl-2 my-5 font-medium">
-          Selected words
-        </h2>
+        <h2 className="border-l-4 border-blue-500 pl-2 my-5 font-medium">Selected words</h2>
         {unknowWords.map((unknowWord, i) => {
           return (
             <div
@@ -133,9 +120,7 @@ export default function ChooseWord() {
           );
         })}
         {isNotUnknowWords ? (
-          <p className="text-red-600 text-sm mb-3">
-            Please select at least one word.
-          </p>
+          <p className="text-red-600 text-sm mb-3">Please select at least one word.</p>
         ) : null}
       </div>
       <div className="flex justify-between mt-6">

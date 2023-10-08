@@ -1,6 +1,6 @@
 import type { AppProps } from "next/app";
-import Footer from "../components/Footer";
-import Header from "../components/Header";
+import Footer from "@/components/common/templates/Footer";
+import Header from "@/components/common/templates/Header";
 import { TabsProvider } from "@/context/tabs";
 import { AddCardStoreProvider } from "@/context/addCardStore";
 import { ToastContainer } from "react-toastify";

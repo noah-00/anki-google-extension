@@ -1,7 +1,7 @@
 import { ADD_FRONT_STEP, CHOOSE_WORD_STEP } from "@/utils/Const";
 import React, { useEffect } from "react";
-import BackButton from "@/components/buttons/backButton";
-import SubmitButton from "@/components/buttons/submitButton";
+import BackButton from "@/components/common/parts/backButton";
+import SubmitButton from "@/components/common/parts/submitButton";
 
 import { useAddCardStore } from "@/context/addCardStore";
 import { useAnkiAction } from "@/hooks/useAnkiAction";
@@ -47,17 +47,16 @@ export default function AddBackCard() {
 
   const frontCardElements = addUnderline(card.content, unknowWords);
 
-  const handleChange =
-    (targetIndex: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
-      handleSetMeanigsOfunknownWords(
-        meanigsOfunknownWords.map((word, i) => {
-          if (i === targetIndex) {
-            return event.target.value;
-          }
-          return word;
-        })
-      );
-    };
+  const handleChange = (targetIndex: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    handleSetMeanigsOfunknownWords(
+      meanigsOfunknownWords.map((word, i) => {
+        if (i === targetIndex) {
+          return event.target.value;
+        }
+        return word;
+      })
+    );
+  };
 
   const reset = () => {
     handleResetCard();
@@ -92,9 +91,7 @@ export default function AddBackCard() {
           modelName: "Basic",
           fields: {
             Front: addUnderlineText(card.content, unknowWords),
-            Back: meanigsOfunknownWords
-              .map((item, index) => `${index + 1}.${item}`)
-              .join("<br>"),
+            Back: meanigsOfunknownWords.map((item, index) => `${index + 1}.${item}`).join("<br>"),
           },
         },
       ],
@@ -113,9 +110,7 @@ export default function AddBackCard() {
 
   return (
     <>
-      <h2 className="border-l-4 border-blue-500 pl-2 font-medium my-5">
-        Front card
-      </h2>
+      <h2 className="border-l-4 border-blue-500 pl-2 font-medium my-5">Front card</h2>
       <div className="border-2 p-2 my-3 rounded-md">{frontCardElements}</div>
       <div>
         <h2 className="border-l-4 border-blue-500 pl-2 my-5 font-medium">
