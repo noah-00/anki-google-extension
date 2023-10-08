@@ -3,7 +3,7 @@ import {
   ADD_FRONT_STEP,
   PAGE_TYPE_ADD,
   PAGE_TYPE_SETTING,
-  CHOOSE_WORD_STEP,
+  CHOOSE_WORD_STEP
 } from "@/utils/Const";
 
 export type PageType = typeof PAGE_TYPE_ADD | typeof PAGE_TYPE_SETTING;

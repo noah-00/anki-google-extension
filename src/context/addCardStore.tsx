@@ -1,18 +1,18 @@
+import React, { ReactNode, useContext, useEffect, useState } from "react";
+
+import { useGoogleStorage } from "@/hooks/useGoogleStorage";
 import { AddCardStepType, TypeCard, UnknowWord } from "@/types";
 import {
   ADD_FRONT_STEP,
   STORAGE_KEY_CURRENT_STEP,
   STORAGE_KEY_CARD,
   STORAGE_KEY_MEANINGS_WORDS,
-  STORAGE_KEY_UNKNOW_WORDS,
+  STORAGE_KEY_UNKNOW_WORDS
 } from "@/utils/Const";
-import React, { ReactNode, useContext, useEffect, useState } from "react";
-
-import { useGoogleStorage } from "@/hooks/useGoogleStorage";
 
 const initialCard = {
   deck: "",
-  content: "",
+  content: ""
 };
 
 interface ProviderProps {
@@ -42,7 +42,7 @@ const AddCardStoreContext = React.createContext<ContextType>({
   unknowWords: [],
   handleSetUnknowWords: () => {},
   meanigsOfunknownWords: [],
-  handleSetMeanigsOfunknownWords: () => {},
+  handleSetMeanigsOfunknownWords: () => {}
 });
 
 export const useAddCardStore = () => {
@@ -76,7 +76,7 @@ export const AddCardStoreProvider = ({ children }: ProviderProps) => {
   const handleResetCard = () => {
     setCard((prevCard) => ({
       ...prevCard,
-      content: "",
+      content: ""
     }));
   };
 
@@ -152,7 +152,7 @@ export const AddCardStoreProvider = ({ children }: ProviderProps) => {
     handleSetUnknowWords,
     meanigsOfunknownWords,
     handleSetMeanigsOfunknownWords,
-    isCrrentStep,
+    isCrrentStep
   };
 
   return (

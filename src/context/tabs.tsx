@@ -1,6 +1,7 @@
+import React, { ReactNode, useContext, useState } from "react";
+
 import { PageType } from "@/types";
 import { PAGE_TYPE_ADD } from "@/utils/Const";
-import React, { ReactNode, useContext, useState } from "react";
 
 interface TabsProviderProps {
   children: ReactNode;
@@ -13,7 +14,7 @@ interface TabsContextType {
 
 const TabsContext = React.createContext<TabsContextType>({
   activePage: PAGE_TYPE_ADD,
-  handleSetActivePage: () => {},
+  handleSetActivePage: () => {}
 });
 
 export const useTabs = () => {
@@ -29,7 +30,7 @@ export const TabsProvider = ({ children }: TabsProviderProps) => {
 
   const value = {
     activePage,
-    handleSetActivePage,
+    handleSetActivePage
   };
 
   return <TabsContext.Provider value={value}>{children}</TabsContext.Provider>;

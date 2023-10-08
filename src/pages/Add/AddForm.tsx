@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useForm, SubmitHandler, Form } from "react-hook-form";
-import { useAddCardStore } from "@/context/addCardStore";
-import { useAnkiAction } from "@/hooks/useAnkiAction";
 
 import ErrorAlert from "@/components/common/parts/ErrorAlert";
-import SubmitButton from "@/components/common/parts/submitButton";
 import Label from "@/components/common/parts/Label";
+import SubmitButton from "@/components/common/parts/submitButton";
 
-import { CHOOSE_WORD_STEP, FORM_KEY_CONTENT, FORM_KEY_DECK } from "@/utils/Const";
+import { useAddCardStore } from "@/context/addCardStore";
+import { useAnkiAction } from "@/hooks/useAnkiAction";
 import { DecksType, TypeCard } from "@/types";
+import { CHOOSE_WORD_STEP, FORM_KEY_CONTENT, FORM_KEY_DECK } from "@/utils/Const";
 
 export default function AddForm() {
   const { handleAddFrontCard, handleSetCurrentStep, card } = useAddCardStore();
@@ -18,7 +18,7 @@ export default function AddForm() {
     handleSubmit,
     setValue,
     formState: { errors },
-    watch,
+    watch
   } = useForm<TypeCard>();
 
   // get deck data from local Anki app
@@ -39,7 +39,7 @@ export default function AddForm() {
 
     const newCard: TypeCard = {
       content: card.content,
-      deck: card.deck,
+      deck: card.deck
     };
 
     if (watch(FORM_KEY_CONTENT)) newCard.content = watch(FORM_KEY_CONTENT);

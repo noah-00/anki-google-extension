@@ -1,13 +1,14 @@
+import { toast } from "react-toastify";
+
 import { TypeAddCardParams } from "@/types";
 import {
   ACTION_DECK_NAMES,
   ACTION_REQUEST_ADD_CARD,
   ACTION_REQUEST_PERMISSON,
-  VERSION_6,
+  VERSION_6
 } from "@/utils/Const";
 import { apiAnkiClient, setJsonToAnki } from "@/utils/functions";
 import { errorParams, successParams } from "@/utils/toast";
-import { toast } from "react-toastify";
 
 const getAnkiPermisson = async () => {
   try {

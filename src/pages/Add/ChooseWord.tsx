@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import { useAddCardStore } from "@/context/addCardStore";
 
-import SubmitButton from "@/components/common/parts/submitButton";
-import BackButton from "@/components/common/parts/backButton";
-import Label from "@/components/common/parts/Label";
 import SelectedWord from "@/components/Add/parts/SelectedWord";
+import BackButton from "@/components/common/parts/backButton";
+import ErrorAlert from "@/components/common/parts/ErrorAlert";
+import Label from "@/components/common/parts/Label";
+import SubmitButton from "@/components/common/parts/submitButton";
 
+import { useAddCardStore } from "@/context/addCardStore";
 import { UnknowWord } from "@/types";
 import { ADD_BACK_STEP, ADD_FRONT_STEP } from "@/utils/Const";
-import ErrorAlert from "@/components/common/parts/ErrorAlert";
 
 export default function ChooseWord() {
   const { handleSetCurrentStep, unknowWords, handleSetUnknowWords, card } = useAddCardStore();
@@ -30,7 +30,7 @@ export default function ChooseWord() {
       const unknowWord = {
         word: String(selectinon),
         startPostion: rangeSelectedWord[0],
-        endPostion: rangeSelectedWord[1],
+        endPostion: rangeSelectedWord[1]
       };
 
       AddUknownWord(unknowWord);

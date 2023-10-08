@@ -1,14 +1,14 @@
 import React, { useEffect } from "react";
+
+import SelectedWordInput from "@/components/Add/parts/SelectedWordInput";
+import BackButton from "@/components/common/parts/backButton";
+import Label from "@/components/common/parts/Label";
+import SubmitButton from "@/components/common/parts/submitButton";
+
 import { useAddCardStore } from "@/context/addCardStore";
 import { useAnkiAction } from "@/hooks/useAnkiAction";
 import { useGoogleStorage } from "@/hooks/useGoogleStorage";
-
-import BackButton from "@/components/common/parts/backButton";
-import SubmitButton from "@/components/common/parts/submitButton";
-
 import { ADD_FRONT_STEP, CHOOSE_WORD_STEP } from "@/utils/Const";
-import Label from "@/components/common/parts/Label";
-import SelectedWordInput from "@/components/Add/parts/SelectedWordInput";
 
 export default function AddBackCard() {
   const {
@@ -18,7 +18,7 @@ export default function AddBackCard() {
     handleSetMeanigsOfunknownWords,
     card,
     handleResetCard,
-    handleSetUnknowWords,
+    handleSetUnknowWords
   } = useAddCardStore();
 
   const { resetLocalStorage } = useGoogleStorage();
@@ -93,10 +93,10 @@ export default function AddBackCard() {
           modelName: "Basic",
           fields: {
             Front: addUnderlineText(card.content, unknowWords),
-            Back: meanigsOfunknownWords.map((item, index) => `${index + 1}.${item}`).join("<br>"),
-          },
-        },
-      ],
+            Back: meanigsOfunknownWords.map((item, index) => `${index + 1}.${item}`).join("<br>")
+          }
+        }
+      ]
     };
 
     await addCard(params);

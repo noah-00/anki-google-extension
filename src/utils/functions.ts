@@ -1,11 +1,12 @@
 import axios from "axios";
+
 import { ANKI_LOCAL_URL } from "./Const";
 
 export const apiAnkiClient = axios.create({
   baseURL: ANKI_LOCAL_URL,
   headers: {
-    "Content-Type": "application/json",
-  },
+    "Content-Type": "application/json"
+  }
 });
 
 export const setJsonToAnki = (
