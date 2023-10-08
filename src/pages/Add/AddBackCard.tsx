@@ -8,7 +8,7 @@ import SubmitButton from "@/components/common/parts/submitButton";
 
 import { ADD_FRONT_STEP, CHOOSE_WORD_STEP } from "@/utils/Const";
 import Label from "@/components/common/parts/Label";
-import SelectedWordInput from "../parts/SelectedWordInput";
+import SelectedWordInput from "@/components/Add/parts/SelectedWordInput";
 
 export default function AddBackCard() {
   const {

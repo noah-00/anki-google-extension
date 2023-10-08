@@ -1,22 +1,15 @@
-import { useTabs } from "@/context/tabs";
-import { useAnkiAction } from "@/hooks/useAnkiAction";
-import { PAGE_TYPE_ADD } from "@/utils/Const";
 import SetButton from "../parts/SetButton";
 
-const RePermit = () => {
-  const { handleSetActivePage } = useTabs();
-  const { getAnkiPermisson } = useAnkiAction();
+type Props = {
+  handleClick: () => void;
+};
 
-  const handleRePermit = async () => {
-    await getAnkiPermisson();
-    handleSetActivePage(PAGE_TYPE_ADD);
-  };
-
+const RePermit = (props: Props) => {
   return (
     <>
       <div className="flex items-center justify-between">
         <h2 className="border-l-4 border-blue-500 pl-2 font-medium">Re-permit</h2>
-        <SetButton handleClick={handleRePermit}>
+        <SetButton handleClick={props.handleClick}>
           <svg
             className="w-6 h-6 text-gray-800 dark:text-white"
             aria-hidden="true"

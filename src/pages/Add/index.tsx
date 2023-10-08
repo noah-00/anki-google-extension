@@ -1,9 +1,9 @@
 import React from "react";
 import { ADD_BACK_STEP, ADD_FRONT_STEP, CHOOSE_WORD_STEP } from "@/utils/Const";
 
-import AddForm from "@/components/Add/templates/AddForm";
-import ChooseWord from "@/components/Add/templates/ChooseWord";
-import AddBackCard from "@/components/Add/templates/AddBackCard";
+import AddForm from "./AddForm";
+import ChooseWord from "./ChooseWord";
+import AddBackCard from "./AddBackCard";
 import StepBar from "@/components/Add/templates/StepBar";
 
 import { useAddCardStore } from "@/context/addCardStore";

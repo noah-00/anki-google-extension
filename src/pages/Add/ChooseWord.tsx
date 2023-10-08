@@ -4,7 +4,7 @@ import { useAddCardStore } from "@/context/addCardStore";
 import SubmitButton from "@/components/common/parts/submitButton";
 import BackButton from "@/components/common/parts/backButton";
 import Label from "@/components/common/parts/Label";
-import SelectedWord from "../parts/SelectedWord";
+import SelectedWord from "@/components/Add/parts/SelectedWord";
 
 import { UnknowWord } from "@/types";
 import { ADD_BACK_STEP, ADD_FRONT_STEP } from "@/utils/Const";
