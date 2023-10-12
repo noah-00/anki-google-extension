@@ -7,56 +7,59 @@ import Label from "@/components/common/parts/Label";
 import SubmitButton from "@/components/common/parts/submitButton";
 
 import { useAddCardStore } from "@/context/addCardStore";
-import { UnknowWord } from "@/types";
+import { UnknownWord } from "@/types";
 import { ADD_BACK_STEP, ADD_FRONT_STEP } from "@/utils/Const";
 
 export default function ChooseWord() {
-  const { handleSetCurrentStep, unknowWords, handleSetUnknowWords, card } = useAddCardStore();
+  const { handleSetCurrentStep, unknownWords, handleSetUnknownWords, card } = useAddCardStore();
 
   const [isDuplicate, setIsDuplicate] = useState(false);
-  const [isNotUnknowWords, setIsNotUnknowWords] = useState(false);
+  const [isNotUnknownWords, setIsNotUnknownWords] = useState(false);
 
   const handleOnMouseUp = () => {
     setIsDuplicate(false);
-    setIsNotUnknowWords(false);
+    setIsNotUnknownWords(false);
 
-    const selectinon = window.getSelection();
+    const selection = window.getSelection();
 
-    if (selectinon !== null && String(selectinon)) {
-      const rangeSelectedWord = [selectinon.anchorOffset, selectinon.focusOffset].sort(
+    if (selection !== null && String(selection)) {
+      const rangeSelectedWord = [selection.anchorOffset, selection.focusOffset].sort(
         (a, b) => a - b
       );
 
-      const unknowWord = {
-        word: String(selectinon),
-        startPostion: rangeSelectedWord[0],
-        endPostion: rangeSelectedWord[1]
+      const unknownWord = {
+        word: String(selection),
+        startPosition: rangeSelectedWord[0],
+        endPosition: rangeSelectedWord[1]
       };
 
-      AddUknownWord(unknowWord);
+      AddUnknownWord(unknownWord);
     }
   };
 
-  const AddUknownWord = (unknowWord: UnknowWord) => {
+  const AddUnknownWord = (unknownWord: UnknownWord) => {
     // validate
 
     // if user select nothing
-    if (unknowWord.startPostion === 0 && unknowWord.endPostion === 0) return setIsDuplicate(true);
-    if (!unknowWord.word.trim()) return;
+    if (unknownWord.startPosition === 0 && unknownWord.endPosition === 0)
+      return setIsDuplicate(true);
+    if (!unknownWord.word.trim()) return;
 
-    if (!isRangeOverlapWithArray(unknowWord)) {
-      handleSetUnknowWords([...unknowWords, unknowWord]);
+    if (!isRangeOverlapWithArray(unknownWord)) {
+      handleSetUnknownWords([...unknownWords, unknownWord]);
     } else {
       setIsDuplicate(true);
     }
   };
 
-  const isOverlapping = (range1: UnknowWord, range2: UnknowWord) => {
-    return !(range1.endPostion <= range2.startPostion || range2.endPostion <= range1.startPostion);
+  const isOverlapping = (range1: UnknownWord, range2: UnknownWord) => {
+    return !(
+      range1.endPosition <= range2.startPosition || range2.endPosition <= range1.startPosition
+    );
   };
 
-  const isRangeOverlapWithArray = (newRange: UnknowWord) => {
-    for (let range of unknowWords) {
+  const isRangeOverlapWithArray = (newRange: UnknownWord) => {
+    for (let range of unknownWords) {
       if (isOverlapping(newRange, range)) {
         return true;
       }
@@ -66,21 +69,21 @@ export default function ChooseWord() {
 
   const handleDelete = (indexToRemove: number) => {
     setIsDuplicate(false);
-    handleSetUnknowWords(unknowWords.filter((_, i) => i !== indexToRemove));
+    handleSetUnknownWords(unknownWords.filter((_, i) => i !== indexToRemove));
   };
 
   const handleSubmit = () => {
-    if (unknowWords.length) {
-      handleSetUnknowWords(unknowWords.sort((a, b) => a.startPostion - b.startPostion));
+    if (unknownWords.length) {
+      handleSetUnknownWords(unknownWords.sort((a, b) => a.startPosition - b.startPosition));
       handleSetCurrentStep(ADD_BACK_STEP);
     } else {
-      setIsNotUnknowWords(true);
+      setIsNotUnknownWords(true);
     }
   };
 
   const handleBack = () => {
     handleSetCurrentStep(ADD_FRONT_STEP);
-    handleSetUnknowWords([]);
+    handleSetUnknownWords([]);
   };
 
   return (
@@ -94,17 +97,17 @@ export default function ChooseWord() {
       ) : null}
       <div>
         <Label>Selected words</Label>
-        {unknowWords.map((unknowWord, index) => {
+        {unknownWords.map((unknownWord, index) => {
           return (
             <SelectedWord
               key={index}
-              word={unknowWord.word}
+              word={unknownWord.word}
               index={index}
               handleDelete={(targetIndex) => handleDelete(targetIndex)}
             />
           );
         })}
-        {isNotUnknowWords ? <ErrorAlert errorMessage="Please select at least one word." /> : null}
+        {isNotUnknownWords ? <ErrorAlert errorMessage="Please select at least one word." /> : null}
       </div>
       <div className="flex justify-between mt-6">
         <BackButton handleClick={handleBack} />

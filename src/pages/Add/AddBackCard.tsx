@@ -13,45 +13,45 @@ import { ADD_FRONT_STEP, CHOOSE_WORD_STEP } from "@/utils/Const";
 export default function AddBackCard() {
   const {
     handleSetCurrentStep,
-    unknowWords,
-    meanigsOfunknownWords,
-    handleSetMeanigsOfunknownWords,
+    unknownWords,
+    meaningsOfUnknownWords,
+    handleSetMeaningsOfUnknownWords,
     card,
     handleResetCard,
-    handleSetUnknowWords
+    handleSetUnknownWords
   } = useAddCardStore();
 
   const { resetLocalStorage } = useGoogleStorage();
   const { addCard } = useAnkiAction();
 
   useEffect(() => {
-    if (meanigsOfunknownWords.length) return;
-    else handleSetMeanigsOfunknownWords(unknowWords.map(() => ""));
-  }, [unknowWords]);
+    if (meaningsOfUnknownWords.length) return;
+    else handleSetMeaningsOfUnknownWords(unknownWords.map(() => ""));
+  }, [unknownWords]);
 
   const addUnderline = (text: string, positions: any[]) => {
     let elements = [];
     let lastEnd = 0;
 
     positions.forEach((position, index) => {
-      elements.push(text.slice(lastEnd, position.startPostion));
+      elements.push(text.slice(lastEnd, position.startPosition));
       elements.push(
         <u key={position.word} className="font-bold text-blue-500">
-          {index + 1}.{text.slice(position.startPostion, position.endPostion)}
+          {index + 1}.{text.slice(position.startPosition, position.endPosition)}
         </u>
       );
-      lastEnd = position.endPostion;
+      lastEnd = position.endPosition;
     });
     elements.push(text.slice(lastEnd));
 
     return elements;
   };
 
-  const frontCardElements = addUnderline(card.content, unknowWords);
+  const frontCardElements = addUnderline(card.content, unknownWords);
 
   const handleChange = (targetIndex: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    handleSetMeanigsOfunknownWords(
-      meanigsOfunknownWords.map((word, i) => {
+    handleSetMeaningsOfUnknownWords(
+      meaningsOfUnknownWords.map((word, i) => {
         if (i === targetIndex) {
           return event.target.value;
         }
@@ -62,7 +62,7 @@ export default function AddBackCard() {
 
   const reset = () => {
     handleResetCard();
-    handleSetUnknowWords([]);
+    handleSetUnknownWords([]);
   };
 
   const addUnderlineText = (text: string, positions: any[]): string => {
@@ -71,13 +71,13 @@ export default function AddBackCard() {
 
     positions.forEach((position, i) => {
       // Add text before the start position
-      resultText += text.slice(lastEnd, position.startPostion);
+      resultText += text.slice(lastEnd, position.startPosition);
       // Add the underlined text
       resultText += `<u style="color: rgb(38, 97, 255);">${i + 1}.${text.slice(
-        position.startPostion,
-        position.endPostion
+        position.startPosition,
+        position.endPosition
       )}</u>`;
-      lastEnd = position.endPostion;
+      lastEnd = position.endPosition;
     });
     // Add remaining text
     resultText += text.slice(lastEnd);
@@ -92,8 +92,8 @@ export default function AddBackCard() {
           deckName: card.deck,
           modelName: "Basic",
           fields: {
-            Front: addUnderlineText(card.content, unknowWords),
-            Back: meanigsOfunknownWords.map((item, index) => `${index + 1}.${item}`).join("<br>")
+            Front: addUnderlineText(card.content, unknownWords),
+            Back: meaningsOfUnknownWords.map((item, index) => `${index + 1}.${item}`).join("<br>")
           }
         }
       ]
@@ -107,7 +107,7 @@ export default function AddBackCard() {
 
   const handleBack = () => {
     handleSetCurrentStep(CHOOSE_WORD_STEP);
-    handleSetMeanigsOfunknownWords([]);
+    handleSetMeaningsOfUnknownWords([]);
   };
 
   return (
@@ -116,13 +116,13 @@ export default function AddBackCard() {
       <div className="border-2 p-2 my-3 rounded-md">{frontCardElements}</div>
 
       <Label>Enter the meaning of the selected word</Label>
-      {unknowWords.map((unknowWord, index) => {
+      {unknownWords.map((unknownWord, index) => {
         return (
           <SelectedWordInput
             key={index}
             index={index}
-            unKnowWord={unknowWord.word}
-            meanigsOfunknownWord={meanigsOfunknownWords[index]}
+            unKnowWord={unknownWord.word}
+            meaningsOfUnknownWord={meaningsOfUnknownWords[index]}
             handleChange={(targetIndex) => handleChange(targetIndex)}
           />
         );

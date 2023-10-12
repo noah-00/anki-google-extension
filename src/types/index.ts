@@ -18,10 +18,10 @@ export type TypeCard = {
   deck: string;
 };
 
-export type UnknowWord = {
+export type UnknownWord = {
   word: string;
-  startPostion: number;
-  endPostion: number;
+  startPosition: number;
+  endPosition: number;
 };
 
 export type TypeAddCardParams = {
