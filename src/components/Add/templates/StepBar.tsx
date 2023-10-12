@@ -4,7 +4,7 @@ import { useAddCardStore } from "@/context/addCardStore";
 import { ADD_BACK_STEP, ADD_CARD_STEP_DESCRIPTION } from "@/utils/Const";
 
 export default function StepBar() {
-  const { isCrrentStep } = useAddCardStore();
+  const { isCurrentStep } = useAddCardStore();
 
   return (
     <ol className="flex items-center w-full space-x-2 text-sm font-medium text-center text-gray-500 sm:space-x-4 justify-center my-6">
@@ -13,20 +13,18 @@ export default function StepBar() {
         return (
           <li
             className={`flex items-center ${
-              isCrrentStep(currentStepNum) ? "text-blue-500" : "border-gray-500"
+              isCurrentStep(currentStepNum) ? "text-blue-500" : "border-gray-500"
             }`}
             key={i}
           >
             <span
               className={`flex items-center justify-center w-5 h-5 mr-2 text-xs border rounded-full shrink-0 ${
-                isCrrentStep(currentStepNum)
-                  ? "border-blue-500"
-                  : "border-gray-500"
+                isCurrentStep(currentStepNum) ? "border-blue-500" : "border-gray-500"
               }`}
             >
               {currentStepNum}
             </span>
-            {isCrrentStep(currentStepNum) && stepInfo}
+            {isCurrentStep(currentStepNum) && stepInfo}
 
             {currentStepNum !== ADD_BACK_STEP && (
               <svg

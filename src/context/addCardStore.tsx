@@ -1,13 +1,13 @@
 import React, { ReactNode, useContext, useEffect, useState } from "react";
 
 import { useGoogleStorage } from "@/hooks/useGoogleStorage";
-import { AddCardStepType, TypeCard, UnknowWord } from "@/types";
+import { AddCardStepType, TypeCard, UnknownWord } from "@/types";
 import {
   ADD_FRONT_STEP,
   STORAGE_KEY_CURRENT_STEP,
   STORAGE_KEY_CARD,
   STORAGE_KEY_MEANINGS_WORDS,
-  STORAGE_KEY_UNKNOW_WORDS
+  STORAGE_KEY_UNKNOWN_WORDS
 } from "@/utils/Const";
 
 const initialCard = {
@@ -22,27 +22,27 @@ interface ProviderProps {
 interface ContextType {
   currentStep: AddCardStepType;
   handleSetCurrentStep: (nextStep: AddCardStepType) => void;
-  isCrrentStep: (crrentIndex: number) => boolean;
+  isCurrentStep: (currentIndex: number) => boolean;
   card: TypeCard;
   handleAddFrontCard: (data: TypeCard) => void;
   handleResetCard: () => void;
-  unknowWords: UnknowWord[];
-  handleSetUnknowWords: (newUnknowWords: UnknowWord[]) => void;
-  meanigsOfunknownWords: string[];
-  handleSetMeanigsOfunknownWords: (newMeanigsOfunknownWords: string[]) => void;
+  unknownWords: UnknownWord[];
+  handleSetUnknownWords: (newUnknownWords: UnknownWord[]) => void;
+  meaningsOfUnknownWords: string[];
+  handleSetMeaningsOfUnknownWords: (newMeaningsOfUnknownWords: string[]) => void;
 }
 
 const AddCardStoreContext = React.createContext<ContextType>({
   currentStep: ADD_FRONT_STEP,
   handleSetCurrentStep: () => {},
-  isCrrentStep: () => false,
+  isCurrentStep: () => false,
   card: initialCard,
   handleAddFrontCard: () => {},
   handleResetCard: () => {},
-  unknowWords: [],
-  handleSetUnknowWords: () => {},
-  meanigsOfunknownWords: [],
-  handleSetMeanigsOfunknownWords: () => {}
+  unknownWords: [],
+  handleSetUnknownWords: () => {},
+  meaningsOfUnknownWords: [],
+  handleSetMeaningsOfUnknownWords: () => {}
 });
 
 export const useAddCardStore = () => {
@@ -53,16 +53,15 @@ export const AddCardStoreProvider = ({ children }: ProviderProps) => {
   const { getLocalStorage, setLocalStorage } = useGoogleStorage();
 
   // steps management
-  const [currentStep, setCurrentStep] =
-    useState<AddCardStepType>(ADD_FRONT_STEP);
+  const [currentStep, setCurrentStep] = useState<AddCardStepType>(ADD_FRONT_STEP);
 
   const handleSetCurrentStep = async (nextStep: AddCardStepType) => {
     setCurrentStep(nextStep);
     setLocalStorage(STORAGE_KEY_CURRENT_STEP, nextStep);
   };
 
-  const isCrrentStep = (crrentIndex: number) => {
-    return crrentIndex === currentStep;
+  const isCurrentStep = (currentIndex: number) => {
+    return currentIndex === currentStep;
   };
 
   // card management
@@ -81,23 +80,19 @@ export const AddCardStoreProvider = ({ children }: ProviderProps) => {
   };
 
   // unknown words management
-  const [unknowWords, setUnknowWords] = useState<UnknowWord[]>([]);
+  const [unknownWords, setUnknownWords] = useState<UnknownWord[]>([]);
 
-  const handleSetUnknowWords = (newUnknowWords: UnknowWord[]) => {
-    setUnknowWords(newUnknowWords);
-    setLocalStorage(STORAGE_KEY_UNKNOW_WORDS, newUnknowWords);
+  const handleSetUnknownWords = (newUnknownWords: UnknownWord[]) => {
+    setUnknownWords(newUnknownWords);
+    setLocalStorage(STORAGE_KEY_UNKNOWN_WORDS, newUnknownWords);
   };
 
-  // meanigsOfunknownWords management
-  const [meanigsOfunknownWords, setMeanigsOfunknownWords] = useState(
-    unknowWords?.map(() => "")
-  );
+  // meaningsOfUnknownWords management
+  const [meaningsOfUnknownWords, setMeaningsOfUnknownWords] = useState(unknownWords?.map(() => ""));
 
-  const handleSetMeanigsOfunknownWords = (
-    newMeanigsOfunknownWords: string[]
-  ) => {
-    setMeanigsOfunknownWords(newMeanigsOfunknownWords);
-    setLocalStorage(STORAGE_KEY_MEANINGS_WORDS, newMeanigsOfunknownWords);
+  const handleSetMeaningsOfUnknownWords = (newMeaningsOfUnknownWords: string[]) => {
+    setMeaningsOfUnknownWords(newMeaningsOfUnknownWords);
+    setLocalStorage(STORAGE_KEY_MEANINGS_WORDS, newMeaningsOfUnknownWords);
   };
 
   /*
@@ -107,14 +102,12 @@ export const AddCardStoreProvider = ({ children }: ProviderProps) => {
   useEffect(() => {
     checkLocalStorageCurrentStep();
     checkLocalStorageCard();
-    checkLocalStorageUnknowWords();
-    checkLocalStorageMeanigsOfunknownWords();
+    checkLocalStorageUnknownWords();
+    checkLocalStorageMeaningsOfUnknownWords();
   }, []);
 
   const checkLocalStorageCurrentStep = async () => {
-    const localCurrentStep = (await getLocalStorage(
-      STORAGE_KEY_CURRENT_STEP
-    )) as AddCardStepType;
+    const localCurrentStep = (await getLocalStorage(STORAGE_KEY_CURRENT_STEP)) as AddCardStepType;
     if (!localCurrentStep) return;
     setCurrentStep(localCurrentStep);
   };
@@ -125,21 +118,18 @@ export const AddCardStoreProvider = ({ children }: ProviderProps) => {
     setCard(localCard);
   };
 
-  const checkLocalStorageUnknowWords = async () => {
-    const localUnknowWords = (await getLocalStorage(
-      STORAGE_KEY_UNKNOW_WORDS
-    )) as UnknowWord[];
-    if (localUnknowWords?.length === 0 || !localUnknowWords) return;
-    setUnknowWords(localUnknowWords);
+  const checkLocalStorageUnknownWords = async () => {
+    const localUnknownWords = (await getLocalStorage(STORAGE_KEY_UNKNOWN_WORDS)) as UnknownWord[];
+    if (localUnknownWords?.length === 0 || !localUnknownWords) return;
+    setUnknownWords(localUnknownWords);
   };
 
-  const checkLocalStorageMeanigsOfunknownWords = async () => {
-    const localMeanigsOfunknownWords = (await getLocalStorage(
+  const checkLocalStorageMeaningsOfUnknownWords = async () => {
+    const localMeaningsOfUnknownWords = (await getLocalStorage(
       STORAGE_KEY_MEANINGS_WORDS
     )) as string[];
-    if (localMeanigsOfunknownWords?.length === 0 || !localMeanigsOfunknownWords)
-      return;
-    setMeanigsOfunknownWords(localMeanigsOfunknownWords);
+    if (localMeaningsOfUnknownWords?.length === 0 || !localMeaningsOfUnknownWords) return;
+    setMeaningsOfUnknownWords(localMeaningsOfUnknownWords);
   };
 
   const value = {
@@ -148,16 +138,12 @@ export const AddCardStoreProvider = ({ children }: ProviderProps) => {
     card,
     handleAddFrontCard,
     handleResetCard,
-    unknowWords,
-    handleSetUnknowWords,
-    meanigsOfunknownWords,
-    handleSetMeanigsOfunknownWords,
-    isCrrentStep
+    unknownWords,
+    handleSetUnknownWords,
+    meaningsOfUnknownWords,
+    handleSetMeaningsOfUnknownWords,
+    isCurrentStep
   };
 
-  return (
-    <AddCardStoreContext.Provider value={value}>
-      {children}
-    </AddCardStoreContext.Provider>
-  );
+  return <AddCardStoreContext.Provider value={value}>{children}</AddCardStoreContext.Provider>;
 };

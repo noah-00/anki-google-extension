@@ -6,10 +6,10 @@ import { PAGE_TYPE_ADD } from "@/utils/Const";
 
 const Index = () => {
   const { handleSetActivePage } = useTabs();
-  const { getAnkiPermisson } = useAnkiAction();
+  const { getAnkiPermission } = useAnkiAction();
 
   const handleRePermit = async () => {
-    await getAnkiPermisson();
+    await getAnkiPermission();
     handleSetActivePage(PAGE_TYPE_ADD);
   };
 

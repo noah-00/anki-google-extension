@@ -19,7 +19,7 @@ export default function PermissionNotice(props: PermissionNoticeProps) {
         </svg>
       </div>
       <div>
-        First, Opne Anki.
+        First, Open Anki.
         <br />
         Please download AnkiConnect from Add-ons and re-authenticate from
         <span

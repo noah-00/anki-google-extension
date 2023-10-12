@@ -7,7 +7,7 @@ import Setting from "@/pages/Setting";
 import { useTabs } from "@/context/tabs";
 import { useAnkiAction } from "@/hooks/useAnkiAction";
 import {
-  ANKI_PERMISSON_GRANTED,
+  ANKI_PERMISSION_GRANTED,
   PAGE_TYPE_ADD,
   PAGE_TYPE_SETTING,
   STATUS_NOT_PERMITTED,
@@ -17,11 +17,11 @@ import {
 export default function Index() {
   const { activePage, handleSetActivePage } = useTabs();
   const [statusPermitted, setStatusPermitted] = useState(STATUS_PERMITTED);
-  const { getAnkiPermisson } = useAnkiAction();
+  const { getAnkiPermission } = useAnkiAction();
 
-  const handleGetAnkiPermisson = async () => {
-    const resultPermition = await getAnkiPermisson();
-    resultPermition === ANKI_PERMISSON_GRANTED
+  const handleGetAnkiPermission = async () => {
+    const resultPermission = await getAnkiPermission();
+    resultPermission === ANKI_PERMISSION_GRANTED
       ? setStatusPermitted(STATUS_PERMITTED)
       : setStatusPermitted(STATUS_NOT_PERMITTED);
   };
@@ -31,7 +31,7 @@ export default function Index() {
   };
 
   useEffect(() => {
-    handleGetAnkiPermisson();
+    handleGetAnkiPermission();
   });
 
   return (
