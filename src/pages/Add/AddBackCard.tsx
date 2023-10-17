@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 
-import SelectedWordInput from "@/components/Add/parts/SelectedWordInput";
+import SelectedWordInput from "@/components/Add/templates/SelectedWordInput";
 import BackButton from "@/components/common/parts/backButton";
 import Label from "@/components/common/parts/Label";
 import SubmitButton from "@/components/common/parts/submitButton";
