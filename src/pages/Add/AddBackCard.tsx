@@ -63,6 +63,7 @@ export default function AddBackCard() {
   const reset = () => {
     handleResetCard();
     handleSetUnknownWords([]);
+    handleSetMeaningsOfUnknownWords([]);
   };
 
   const addUnderlineText = (text: string, positions: any[]): string => {
