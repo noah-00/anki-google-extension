@@ -4,7 +4,7 @@ import SelectedWord from "@/components/Add/parts/SelectedWord";
 import BackButton from "@/components/common/parts/backButton";
 import ErrorAlert from "@/components/common/parts/ErrorAlert";
 import Label from "@/components/common/parts/Label";
-import SubmitButton from "@/components/common/parts/submitButton";
+import SubmitButton from "@/components/common/parts/SubmitButton";
 
 import { useAddCardStore } from "@/context/addCardStore";
 import { UnknownWord } from "@/types";

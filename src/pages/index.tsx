@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import PermissionNotice from "@/components/common/parts/permissionNotice";
+import PermissionNotice from "@/components/common/parts/PermissionNotice";
 import Add from "@/pages/Add/index";
 import Setting from "@/pages/Setting";
 
