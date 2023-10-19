@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import SelectedWordInput from "@/components/Add/templates/SelectedWordInput";
 import BackButton from "@/components/common/parts/backButton";
 import Label from "@/components/common/parts/Label";
-import SubmitButton from "@/components/common/parts/submitButton";
+import SubmitButton from "@/components/common/parts/SubmitButton";
 
 import { useAddCardStore } from "@/context/addCardStore";
 import { useAnkiAction } from "@/hooks/useAnkiAction";
@@ -63,6 +63,7 @@ export default function AddBackCard() {
   const reset = () => {
     handleResetCard();
     handleSetUnknownWords([]);
+    handleSetMeaningsOfUnknownWords([]);
   };
 
   const addUnderlineText = (text: string, positions: any[]): string => {
