@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 
 type Props = {
   word: string;
@@ -7,12 +7,27 @@ type Props = {
 };
 
 export default function SelectedWord(props: Props) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  const handleClick = async () => {
+    if (ref.current) {
+      ref.current.classList.remove("animate-slit-in-horizontal");
+      ref.current.classList.add("animate-slit-out-horizontal");
+
+      await new Promise((resolve) => setTimeout(resolve, 390));
+      props.handleDelete(props.index);
+    }
+  };
+
   return (
-    <div className="bg-default-blue-button flex mb-2 items-center justify-between py-0.5 rounded-md">
+    <div
+      className="bg-default-blue-button flex mb-2 items-center justify-between py-0.5 rounded-md animate-slit-in-horizontal"
+      ref={ref}
+    >
       <div className="px-2">{props.index + 1}.</div>
       <div>{props.word}</div>
       <div className="px-2">
-        <button className="pt-1" onClick={() => props.handleDelete(props.index)}>
+        <button className="pt-1" onClick={handleClick}>
           <svg
             className="w-4 h-4 bg-white text-blue-500"
             aria-hidden="true"

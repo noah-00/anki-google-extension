@@ -100,7 +100,7 @@ export default function ChooseWord() {
         {unknownWords.map((unknownWord, index) => {
           return (
             <SelectedWord
-              key={index}
+              key={`${unknownWord.startPosition}-${unknownWord.endPosition}`}
               word={unknownWord.word}
               index={index}
               handleDelete={(targetIndex) => handleDelete(targetIndex)}
