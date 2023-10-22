@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 import SelectedWord from "@/components/Add/parts/SelectedWord";
+import CardPreview from "@/components/Add/templates/CardPreview";
 import BackButton from "@/components/common/parts/backButton";
 import ErrorAlert from "@/components/common/parts/ErrorAlert";
 import Label from "@/components/common/parts/Label";
@@ -11,7 +12,14 @@ import { UnknownWord } from "@/types";
 import { ADD_BACK_STEP, ADD_FRONT_STEP } from "@/utils/Const";
 
 export default function ChooseWord() {
-  const { handleSetCurrentStep, unknownWords, handleSetUnknownWords, card } = useAddCardStore();
+  const {
+    handleSetCurrentStep,
+    unknownWords,
+    handleSetUnknownWords,
+    card,
+    handleSetIsPreview,
+    isPreview
+  } = useAddCardStore();
 
   const [isDuplicate, setIsDuplicate] = useState(false);
   const [isNotUnknownWords, setIsNotUnknownWords] = useState(false);
@@ -86,10 +94,35 @@ export default function ChooseWord() {
     handleSetUnknownWords([]);
   };
 
+  const addUnderline = (text: string, UnknownWords: UnknownWord[]) => {
+    let elements = [];
+    let lastEnd = 0;
+
+    UnknownWords.sort((a, b) => a.startPosition - b.startPosition).forEach((UnknownWord) => {
+      const addElement = (
+        <span className="font-bold underline text-blue-500">
+          {text.slice(UnknownWord.startPosition, UnknownWord.endPosition)}
+        </span>
+      );
+
+      elements.push(text.slice(lastEnd, UnknownWord.startPosition));
+      elements.push(addElement);
+      lastEnd = UnknownWord.endPosition;
+    });
+    elements.push(text.slice(lastEnd));
+
+    return elements;
+  };
+
+  const frontCardElements = addUnderline(card.content, unknownWords);
+
   return (
     <>
       <Label>Choose your unknown a word</Label>
-      <div onMouseUp={handleOnMouseUp} className="border-2 p-2 my-3 rounded-md text-sm">
+      <div
+        onMouseUp={handleOnMouseUp}
+        className="border-2 p-2 my-4 rounded-md text-sm hover:bg-gray-50"
+      >
         {card.content}
       </div>
       {isDuplicate ? (
@@ -109,6 +142,11 @@ export default function ChooseWord() {
         })}
         {isNotUnknownWords ? <ErrorAlert errorMessage="Please select at least one word." /> : null}
       </div>
+      <CardPreview
+        frontCardElements={frontCardElements}
+        isPreview={isPreview}
+        handleChange={handleSetIsPreview}
+      />
       <div className="flex justify-between mt-6">
         <BackButton handleClick={handleBack} />
         <SubmitButton handleSubmit={handleSubmit} />

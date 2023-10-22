@@ -7,7 +7,8 @@ import {
   STORAGE_KEY_CURRENT_STEP,
   STORAGE_KEY_CARD,
   STORAGE_KEY_MEANINGS_WORDS,
-  STORAGE_KEY_UNKNOWN_WORDS
+  STORAGE_KEY_UNKNOWN_WORDS,
+  STORAGE_KEY_IS_PREVIEW
 } from "@/utils/Const";
 
 const initialCard = {
@@ -30,6 +31,8 @@ interface ContextType {
   handleSetUnknownWords: (newUnknownWords: UnknownWord[]) => void;
   meaningsOfUnknownWords: string[];
   handleSetMeaningsOfUnknownWords: (newMeaningsOfUnknownWords: string[]) => void;
+  isPreview: boolean;
+  handleSetIsPreview: () => void;
 }
 
 const AddCardStoreContext = React.createContext<ContextType>({
@@ -42,7 +45,9 @@ const AddCardStoreContext = React.createContext<ContextType>({
   unknownWords: [],
   handleSetUnknownWords: () => {},
   meaningsOfUnknownWords: [],
-  handleSetMeaningsOfUnknownWords: () => {}
+  handleSetMeaningsOfUnknownWords: () => {},
+  isPreview: false,
+  handleSetIsPreview: () => {}
 });
 
 export const useAddCardStore = () => {
@@ -95,6 +100,14 @@ export const AddCardStoreProvider = ({ children }: ProviderProps) => {
     setLocalStorage(STORAGE_KEY_MEANINGS_WORDS, newMeaningsOfUnknownWords);
   };
 
+  // isPreview management in chooseWord page
+  const [isPreview, setIsPreview] = useState(false);
+
+  const handleSetIsPreview = () => {
+    setLocalStorage(STORAGE_KEY_IS_PREVIEW, !isPreview);
+    setIsPreview(!isPreview);
+  };
+
   /*
   @ if user refresh page, we need to check if there is data in google local storage
   */
@@ -104,6 +117,7 @@ export const AddCardStoreProvider = ({ children }: ProviderProps) => {
     checkLocalStorageCard();
     checkLocalStorageUnknownWords();
     checkLocalStorageMeaningsOfUnknownWords();
+    checkLocalStorageIsPreview();
   }, []);
 
   const checkLocalStorageCurrentStep = async () => {
@@ -132,6 +146,12 @@ export const AddCardStoreProvider = ({ children }: ProviderProps) => {
     setMeaningsOfUnknownWords(localMeaningsOfUnknownWords);
   };
 
+  const checkLocalStorageIsPreview = async () => {
+    const localIsPreview = (await getLocalStorage(STORAGE_KEY_IS_PREVIEW)) as boolean;
+    if (!localIsPreview) return;
+    setIsPreview(localIsPreview);
+  };
+
   const value = {
     currentStep,
     handleSetCurrentStep,
@@ -142,7 +162,9 @@ export const AddCardStoreProvider = ({ children }: ProviderProps) => {
     handleSetUnknownWords,
     meaningsOfUnknownWords,
     handleSetMeaningsOfUnknownWords,
-    isCurrentStep
+    isCurrentStep,
+    isPreview,
+    handleSetIsPreview
   };
 
   return <AddCardStoreContext.Provider value={value}>{children}</AddCardStoreContext.Provider>;
