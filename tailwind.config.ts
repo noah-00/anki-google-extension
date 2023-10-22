@@ -8,8 +8,8 @@ module.exports = {
         "gradient-conic": "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))"
       },
       animation: {
-        "slit-in-horizontal": "slit-in-horizontal 0.45s ease   both",
-        "slit-out-horizontal": "slit-out-horizontal 0.4s ease   both"
+        "slit-in-horizontal": "slit-in-horizontal 0.35s ease   both",
+        "slit-out-horizontal": "slit-out-horizontal 0.3s ease   both"
       },
       keyframes: {
         "slit-in-horizontal": {

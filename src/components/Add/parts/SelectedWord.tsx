@@ -14,7 +14,7 @@ export default function SelectedWord(props: Props) {
       ref.current.classList.remove("animate-slit-in-horizontal");
       ref.current.classList.add("animate-slit-out-horizontal");
 
-      await new Promise((resolve) => setTimeout(resolve, 390));
+      await new Promise((resolve) => setTimeout(resolve, 290));
       props.handleDelete(props.index);
     }
   };
