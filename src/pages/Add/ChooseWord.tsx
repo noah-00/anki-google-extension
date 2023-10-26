@@ -118,10 +118,15 @@ export default function ChooseWord() {
 
   return (
     <>
+      <CardPreview
+        frontCardElements={frontCardElements}
+        isPreview={isPreview}
+        handleChange={handleSetIsPreview}
+      />
       <Label>Choose your unknown a word</Label>
       <div
         onMouseUp={handleOnMouseUp}
-        className="border-2 p-2 my-4 rounded-md text-sm hover:bg-gray-50"
+        className="border-2 p-2 my-4 mx-1 rounded-md text-sm hover:bg-gray-50"
       >
         {card.content}
       </div>
@@ -142,11 +147,6 @@ export default function ChooseWord() {
         })}
         {isNotUnknownWords ? <ErrorAlert errorMessage="Please select at least one word." /> : null}
       </div>
-      <CardPreview
-        frontCardElements={frontCardElements}
-        isPreview={isPreview}
-        handleChange={handleSetIsPreview}
-      />
       <div className="flex justify-between mt-6">
         <BackButton handleClick={handleBack} />
         <SubmitButton handleSubmit={handleSubmit} />
