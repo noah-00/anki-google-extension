@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import SelectedWord from "@/components/Add/parts/SelectedWord";
 import CardPreview from "@/components/Add/templates/CardPreview";
-import BackButton from "@/components/common/parts/backButton";
+import BackButton from "@/components/common/parts/BackButton";
 import ErrorAlert from "@/components/common/parts/ErrorAlert";
 import Label from "@/components/common/parts/Label";
 import SubmitButton from "@/components/common/parts/SubmitButton";

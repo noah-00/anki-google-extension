@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 
 import SelectedWordInput from "@/components/Add/templates/SelectedWordInput";
-import BackButton from "@/components/common/parts/backButton";
+import BackButton from "@/components/common/parts/BackButton";
 import Label from "@/components/common/parts/Label";
 import SubmitButton from "@/components/common/parts/SubmitButton";
 
