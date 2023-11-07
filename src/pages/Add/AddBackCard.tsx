@@ -1,8 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import SelectedWordInput from "@/components/Add/templates/SelectedWordInput";
 import BackButton from "@/components/common/parts/BackButton";
 import Label from "@/components/common/parts/Label";
+import Loading from "@/components/common/parts/Loading";
 import SubmitButton from "@/components/common/parts/SubmitButton";
 
 import { useAddCardStore } from "@/context/addCardStore";
@@ -20,6 +21,8 @@ export default function AddBackCard() {
     handleResetCard,
     handleSetUnknownWords
   } = useAddCardStore();
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const { resetLocalStorage } = useGoogleStorage();
   const { addCard } = useAnkiAction();
@@ -87,6 +90,8 @@ export default function AddBackCard() {
   };
 
   const handleAddCard = async () => {
+    setIsLoading(true);
+
     const params = {
       notes: [
         {
@@ -129,10 +134,14 @@ export default function AddBackCard() {
         );
       })}
 
-      <div className="flex justify-between mt-5">
-        <BackButton handleClick={handleBack} />
-        <SubmitButton handleSubmit={handleAddCard} isFinalStep={true} />
-      </div>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <div className="flex justify-between mt-5">
+          <BackButton handleClick={handleBack} />
+          <SubmitButton handleSubmit={handleAddCard} isFinalStep={true} />
+        </div>
+      )}
     </>
   );
 }

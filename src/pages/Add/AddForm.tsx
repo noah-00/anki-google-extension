@@ -3,6 +3,7 @@ import { useForm, SubmitHandler, Form } from "react-hook-form";
 
 import ErrorAlert from "@/components/common/parts/ErrorAlert";
 import Label from "@/components/common/parts/Label";
+import Loading from "@/components/common/parts/Loading";
 import SubmitButton from "@/components/common/parts/SubmitButton";
 
 import { useAddCardStore } from "@/context/addCardStore";
@@ -21,11 +22,16 @@ export default function AddForm() {
     watch
   } = useForm<TypeCard>();
 
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
   // get deck data from local Anki app
   const [decks, setDecks] = useState<DecksType>([]);
 
   useEffect(() => {
-    handleSetDeck();
+    (async () => {
+      await handleSetDeck();
+      setIsLoading(false);
+    })();
   }, []);
 
   const handleSetDeck = async (): Promise<void> => {
@@ -67,20 +73,23 @@ export default function AddForm() {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Label htmlFor="deck">Current Deck</Label>
-      <select
-        {...register(FORM_KEY_DECK, { required: true })}
-        id="deck"
-        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-      >
-        <option value="">Select a deck</option>
-        {decks?.map((deck, i) => (
-          <option value={deck} key={i}>
-            {deck}
-          </option>
-        ))}
-      </select>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <select
+          {...register(FORM_KEY_DECK, { required: true })}
+          id="deck"
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+        >
+          <option value="">Select a deck</option>
+          {decks?.map((deck, i) => (
+            <option value={deck} key={i}>
+              {deck}
+            </option>
+          ))}
+        </select>
+      )}
       {errors.deck && <ErrorAlert errorMessage="This field is required" />}
-
       <Label htmlFor="front">Front</Label>
       <textarea
         id="front"
@@ -89,7 +98,6 @@ export default function AddForm() {
         {...register(FORM_KEY_CONTENT, { required: true })}
       ></textarea>
       {errors.content && <ErrorAlert errorMessage="This field is required" />}
-
       <div className="flex justify-end mt-4">
         <SubmitButton />
       </div>
