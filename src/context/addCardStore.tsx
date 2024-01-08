@@ -36,6 +36,7 @@ interface ContextType {
   handleSetIsPreview: () => void;
   isBlankCard: boolean;
   handleSetBlankCard: () => void;
+  restoreDataToLocalStorage: () => void;
 }
 
 const AddCardStoreContext = React.createContext<ContextType>({
@@ -52,7 +53,8 @@ const AddCardStoreContext = React.createContext<ContextType>({
   isPreview: false,
   handleSetIsPreview: () => {},
   isBlankCard: false,
-  handleSetBlankCard: () => {}
+  handleSetBlankCard: () => {},
+  restoreDataToLocalStorage: () => {}
 });
 
 export const useAddCardStore = () => {
@@ -121,6 +123,12 @@ export const AddCardStoreProvider = ({ children }: ProviderProps) => {
     setIsBlankCard(!isBlankCard);
   };
 
+  // restore data from context to local storage
+  const restoreDataToLocalStorage = () => {
+    isBlankCard && setLocalStorage(STORAGE_KEY_IS_BLANK_CARD, isBlankCard);
+    isPreview && setLocalStorage(STORAGE_KEY_IS_PREVIEW, isPreview);
+  };
+
   /*
   @ if user refresh page, we need to check if there is data in google local storage
   */
@@ -187,7 +195,8 @@ export const AddCardStoreProvider = ({ children }: ProviderProps) => {
     isPreview,
     handleSetIsPreview,
     isBlankCard,
-    handleSetBlankCard
+    handleSetBlankCard,
+    restoreDataToLocalStorage
   };
 
   return <AddCardStoreContext.Provider value={value}>{children}</AddCardStoreContext.Provider>;

@@ -22,7 +22,8 @@ export default function AddBackCard() {
     handleResetCard,
     handleSetUnknownWords,
     isBlankCard,
-    handleSetBlankCard
+    handleSetBlankCard,
+    restoreDataToLocalStorage
   } = useAddCardStore();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -126,6 +127,8 @@ export default function AddBackCard() {
     await addCard(params);
     await resetLocalStorage();
     reset();
+    // this func for resetLocalStorage
+    restoreDataToLocalStorage();
     handleSetCurrentStep(ADD_FRONT_STEP);
   };
 
