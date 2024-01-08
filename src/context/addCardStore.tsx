@@ -8,7 +8,8 @@ import {
   STORAGE_KEY_CARD,
   STORAGE_KEY_MEANINGS_WORDS,
   STORAGE_KEY_UNKNOWN_WORDS,
-  STORAGE_KEY_IS_PREVIEW
+  STORAGE_KEY_IS_PREVIEW,
+  STORAGE_KEY_IS_BLANK_CARD
 } from "@/utils/Const";
 
 const initialCard = {
@@ -33,6 +34,8 @@ interface ContextType {
   handleSetMeaningsOfUnknownWords: (newMeaningsOfUnknownWords: string[]) => void;
   isPreview: boolean;
   handleSetIsPreview: () => void;
+  isBlankCard: boolean;
+  handleSetBlankCard: () => void;
 }
 
 const AddCardStoreContext = React.createContext<ContextType>({
@@ -47,7 +50,9 @@ const AddCardStoreContext = React.createContext<ContextType>({
   meaningsOfUnknownWords: [],
   handleSetMeaningsOfUnknownWords: () => {},
   isPreview: false,
-  handleSetIsPreview: () => {}
+  handleSetIsPreview: () => {},
+  isBlankCard: false,
+  handleSetBlankCard: () => {}
 });
 
 export const useAddCardStore = () => {
@@ -108,6 +113,14 @@ export const AddCardStoreProvider = ({ children }: ProviderProps) => {
     setIsPreview(!isPreview);
   };
 
+  // isBlankCard management in addBackCard page
+  const [isBlankCard, setIsBlankCard] = useState(false);
+
+  const handleSetBlankCard = () => {
+    setLocalStorage(STORAGE_KEY_IS_BLANK_CARD, !isBlankCard);
+    setIsBlankCard(!isBlankCard);
+  };
+
   /*
   @ if user refresh page, we need to check if there is data in google local storage
   */
@@ -118,6 +131,7 @@ export const AddCardStoreProvider = ({ children }: ProviderProps) => {
     checkLocalStorageUnknownWords();
     checkLocalStorageMeaningsOfUnknownWords();
     checkLocalStorageIsPreview();
+    checkLocalStorageIsBlankCard();
   }, []);
 
   const checkLocalStorageCurrentStep = async () => {
@@ -152,6 +166,13 @@ export const AddCardStoreProvider = ({ children }: ProviderProps) => {
     setIsPreview(localIsPreview);
   };
 
+  // isBlankCard
+  const checkLocalStorageIsBlankCard = async () => {
+    const localIsBlankCard = (await getLocalStorage(STORAGE_KEY_IS_BLANK_CARD)) as boolean;
+    if (!localIsBlankCard) return;
+    setIsBlankCard(localIsBlankCard);
+  };
+
   const value = {
     currentStep,
     handleSetCurrentStep,
@@ -164,7 +185,9 @@ export const AddCardStoreProvider = ({ children }: ProviderProps) => {
     handleSetMeaningsOfUnknownWords,
     isCurrentStep,
     isPreview,
-    handleSetIsPreview
+    handleSetIsPreview,
+    isBlankCard,
+    handleSetBlankCard
   };
 
   return <AddCardStoreContext.Provider value={value}>{children}</AddCardStoreContext.Provider>;

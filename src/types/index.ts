@@ -28,9 +28,13 @@ export type TypeAddCardParams = {
   notes: {
     deckName: string;
     modelName: string;
-    fields: {
-      Front: string;
-      Back: string;
-    };
+    fields:
+      | {
+          Text: string;
+        }
+      | {
+          Front: string;
+          Back: string;
+        };
   }[];
 };

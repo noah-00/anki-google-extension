@@ -34,3 +34,4 @@ export const STORAGE_KEY_CARD = "card";
 export const STORAGE_KEY_UNKNOWN_WORDS = "unknownWords";
 export const STORAGE_KEY_MEANINGS_WORDS = "meaningsOfUnknownWords";
 export const STORAGE_KEY_IS_PREVIEW = "isPreview";
+export const STORAGE_KEY_IS_BLANK_CARD = "isBlankCard";
