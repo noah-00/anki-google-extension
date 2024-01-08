@@ -5,6 +5,7 @@ import BackButton from "@/components/common/parts/BackButton";
 import Label from "@/components/common/parts/Label";
 import Loading from "@/components/common/parts/Loading";
 import SubmitButton from "@/components/common/parts/SubmitButton";
+import ToggleButton from "@/components/common/parts/ToggleButton";
 
 import { useAddCardStore } from "@/context/addCardStore";
 import { useAnkiAction } from "@/hooks/useAnkiAction";
@@ -19,7 +20,9 @@ export default function AddBackCard() {
     handleSetMeaningsOfUnknownWords,
     card,
     handleResetCard,
-    handleSetUnknownWords
+    handleSetUnknownWords,
+    isBlankCard,
+    handleSetBlankCard
   } = useAddCardStore();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -32,25 +35,31 @@ export default function AddBackCard() {
     else handleSetMeaningsOfUnknownWords(unknownWords.map(() => ""));
   }, [unknownWords]);
 
-  const addUnderline = (text: string, positions: any[]) => {
+  const getFrontCardElements = (text: string, positions: any[], isBlankCard: boolean) => {
     let elements = [];
     let lastEnd = 0;
 
     positions.forEach((position, index) => {
       elements.push(text.slice(lastEnd, position.startPosition));
-      elements.push(
-        <u key={position.word} className="font-bold text-blue-500">
-          {index + 1}.{text.slice(position.startPosition, position.endPosition)}
-        </u>
-      );
+      if (isBlankCard)
+        elements.push(
+          <u key={position.word} className="font-bold text-blue-500">
+            &#123;&#123;c1::{text.slice(position.startPosition, position.endPosition)}::
+            {meaningsOfUnknownWords[index]}&#125;&#125;
+          </u>
+        );
+      else
+        elements.push(
+          <u key={position.word} className="font-bold text-blue-500">
+            {index + 1}.{text.slice(position.startPosition, position.endPosition)}
+          </u>
+        );
       lastEnd = position.endPosition;
     });
     elements.push(text.slice(lastEnd));
 
     return elements;
   };
-
-  const frontCardElements = addUnderline(card.content, unknownWords);
 
   const handleChange = (targetIndex: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
     handleSetMeaningsOfUnknownWords(
@@ -69,7 +78,7 @@ export default function AddBackCard() {
     handleSetMeaningsOfUnknownWords([]);
   };
 
-  const addUnderlineText = (text: string, positions: any[]): string => {
+  const convertFrontText = (text: string, positions: any[]): string => {
     let resultText = "";
     let lastEnd = 0;
 
@@ -77,10 +86,15 @@ export default function AddBackCard() {
       // Add text before the start position
       resultText += text.slice(lastEnd, position.startPosition);
       // Add the underlined text
-      resultText += `<u style="color: rgb(38, 97, 255);">${i + 1}.${text.slice(
-        position.startPosition,
-        position.endPosition
-      )}</u>`;
+      if (isBlankCard)
+        resultText += `{{c1::${text.slice(position.startPosition, position.endPosition)}::${
+          meaningsOfUnknownWords[i] || "..."
+        }}}`;
+      else
+        resultText += `<u style="color: rgb(38, 97, 255);">${i + 1}.${text.slice(
+          position.startPosition,
+          position.endPosition
+        )}</u>`;
       lastEnd = position.endPosition;
     });
     // Add remaining text
@@ -96,11 +110,15 @@ export default function AddBackCard() {
       notes: [
         {
           deckName: card.deck,
-          modelName: "Basic",
-          fields: {
-            Front: addUnderlineText(card.content, unknownWords),
-            Back: meaningsOfUnknownWords.map((item, index) => `${index + 1}.${item}`).join("<br>")
-          }
+          modelName: isBlankCard ? "Cloze" : "Basic",
+          fields: isBlankCard
+            ? { Text: convertFrontText(card.content, unknownWords) }
+            : {
+                Front: convertFrontText(card.content, unknownWords),
+                Back: meaningsOfUnknownWords
+                  .map((item, index) => `${index + 1}.${item}`)
+                  .join("<br>")
+              }
         }
       ]
     };
@@ -118,8 +136,17 @@ export default function AddBackCard() {
 
   return (
     <>
+      <div className="flex justify-between pt-1">
+        <div className="border-l-4 border-blue-500 pl-2 font-medium">Blank card</div>
+        <div>
+          <ToggleButton checked={isBlankCard} handleChange={handleSetBlankCard} />
+        </div>
+      </div>
+
       <Label>Front card</Label>
-      <div className="border-2 p-2 my-3 rounded-md">{frontCardElements}</div>
+      <div className="border-2 p-2 my-3 rounded-md">
+        {getFrontCardElements(card.content, unknownWords, isBlankCard)}
+      </div>
 
       <Label>Enter the meaning of the selected word</Label>
       {unknownWords.map((unknownWord, index) => {
