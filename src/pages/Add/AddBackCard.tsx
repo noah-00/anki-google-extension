@@ -5,7 +5,7 @@ import BackButton from "@/components/common/parts/BackButton";
 import Label from "@/components/common/parts/Label";
 import Loading from "@/components/common/parts/Loading";
 import SubmitButton from "@/components/common/parts/SubmitButton";
-import ToggleButton from "@/components/common/parts/ToggleButton";
+import ToggleSwitch from "@/components/common/parts/ToggleSwitch";
 
 import { useAddCardStore } from "@/context/addCardStore";
 import { useAnkiAction } from "@/hooks/useAnkiAction";
@@ -42,22 +42,51 @@ export default function AddBackCard() {
 
     positions.forEach((position, index) => {
       elements.push(text.slice(lastEnd, position.startPosition));
-      if (isBlankCard)
+      if (isBlankCard) {
         elements.push(
           <u key={position.word} className="font-bold text-blue-500">
-            &#123;&#123;c1::{text.slice(position.startPosition, position.endPosition)}::
-            {meaningsOfUnknownWords[index]}&#125;&#125;
+            [{meaningsOfUnknownWords[index]}]
           </u>
         );
-      else
+      } else {
         elements.push(
           <u key={position.word} className="font-bold text-blue-500">
             {index + 1}.{text.slice(position.startPosition, position.endPosition)}
           </u>
         );
+      }
       lastEnd = position.endPosition;
     });
     elements.push(text.slice(lastEnd));
+
+    return elements;
+  };
+
+  const getBackCardElements = (text: string, positions: any[], isBlankCard: boolean) => {
+    let elements: any = [];
+    let lastEnd = 0;
+
+    if (isBlankCard) {
+      positions.forEach((position) => {
+        elements.push(text.slice(lastEnd, position.startPosition));
+        elements.push(
+          <u key={position.word} className="font-bold text-blue-500">
+            {" " + text.slice(position.startPosition, position.endPosition)}
+          </u>
+        );
+        lastEnd = position.endPosition;
+      });
+
+      elements.push(text.slice(lastEnd));
+    } else {
+      meaningsOfUnknownWords.forEach((meaning, index) => {
+        elements.push(
+          <div>
+            {index + 1}.{meaning}
+          </div>
+        );
+      });
+    }
 
     return elements;
   };
@@ -139,16 +168,25 @@ export default function AddBackCard() {
 
   return (
     <>
-      <div className="flex justify-between pt-1">
-        <div className="border-l-4 border-blue-500 pl-2 font-medium">Blank card</div>
-        <div>
-          <ToggleButton checked={isBlankCard} handleChange={handleSetBlankCard} />
+      <ToggleSwitch
+        checked={isBlankCard}
+        handleChange={handleSetBlankCard}
+        checkedLabel="Blank card"
+        notCheckedLabel="Basic card"
+      />
+
+      <Label>Preview</Label>
+      <div className="border-2 p-2 py-3 my-6 rounded-md relative border-gray-300">
+        {getFrontCardElements(card.content, unknownWords, isBlankCard)}
+        <div className="absolute -top-[15px] bg-white px-2 bg-default-blue border-2 rounded-md">
+          Front
         </div>
       </div>
-
-      <Label>Front card</Label>
-      <div className="border-2 p-2 my-3 rounded-md">
-        {getFrontCardElements(card.content, unknownWords, isBlankCard)}
+      <div className="border-2 p-2 py-3 my-6 rounded-md relative border-gray-300">
+        {getBackCardElements(card.content, unknownWords, isBlankCard)}
+        <div className="absolute -top-[15px] bg-white px-2 bg-default-blue border-2 rounded-md">
+          Back
+        </div>
       </div>
 
       <Label>Enter the meaning of the selected word</Label>
