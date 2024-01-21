@@ -8,7 +8,6 @@ import {
   STORAGE_KEY_CARD,
   STORAGE_KEY_MEANINGS_WORDS,
   STORAGE_KEY_UNKNOWN_WORDS,
-  STORAGE_KEY_IS_PREVIEW,
   STORAGE_KEY_IS_BLANK_CARD
 } from "@/utils/Const";
 
@@ -32,8 +31,6 @@ interface ContextType {
   handleSetUnknownWords: (newUnknownWords: UnknownWord[]) => void;
   meaningsOfUnknownWords: string[];
   handleSetMeaningsOfUnknownWords: (newMeaningsOfUnknownWords: string[]) => void;
-  isPreview: boolean;
-  handleSetIsPreview: () => void;
   isBlankCard: boolean;
   handleSetBlankCard: () => void;
   restoreDataToLocalStorage: () => void;
@@ -50,8 +47,6 @@ const AddCardStoreContext = React.createContext<ContextType>({
   handleSetUnknownWords: () => {},
   meaningsOfUnknownWords: [],
   handleSetMeaningsOfUnknownWords: () => {},
-  isPreview: false,
-  handleSetIsPreview: () => {},
   isBlankCard: false,
   handleSetBlankCard: () => {},
   restoreDataToLocalStorage: () => {}
@@ -107,14 +102,6 @@ export const AddCardStoreProvider = ({ children }: ProviderProps) => {
     setLocalStorage(STORAGE_KEY_MEANINGS_WORDS, newMeaningsOfUnknownWords);
   };
 
-  // isPreview management in chooseWord page
-  const [isPreview, setIsPreview] = useState(false);
-
-  const handleSetIsPreview = () => {
-    setLocalStorage(STORAGE_KEY_IS_PREVIEW, !isPreview);
-    setIsPreview(!isPreview);
-  };
-
   // isBlankCard management in addBackCard page
   const [isBlankCard, setIsBlankCard] = useState(false);
 
@@ -126,7 +113,6 @@ export const AddCardStoreProvider = ({ children }: ProviderProps) => {
   // restore data from context to local storage
   const restoreDataToLocalStorage = () => {
     isBlankCard && setLocalStorage(STORAGE_KEY_IS_BLANK_CARD, isBlankCard);
-    isPreview && setLocalStorage(STORAGE_KEY_IS_PREVIEW, isPreview);
   };
 
   /*
@@ -138,7 +124,6 @@ export const AddCardStoreProvider = ({ children }: ProviderProps) => {
     checkLocalStorageCard();
     checkLocalStorageUnknownWords();
     checkLocalStorageMeaningsOfUnknownWords();
-    checkLocalStorageIsPreview();
     checkLocalStorageIsBlankCard();
   }, []);
 
@@ -168,12 +153,6 @@ export const AddCardStoreProvider = ({ children }: ProviderProps) => {
     setMeaningsOfUnknownWords(localMeaningsOfUnknownWords);
   };
 
-  const checkLocalStorageIsPreview = async () => {
-    const localIsPreview = (await getLocalStorage(STORAGE_KEY_IS_PREVIEW)) as boolean;
-    if (!localIsPreview) return;
-    setIsPreview(localIsPreview);
-  };
-
   // isBlankCard
   const checkLocalStorageIsBlankCard = async () => {
     const localIsBlankCard = (await getLocalStorage(STORAGE_KEY_IS_BLANK_CARD)) as boolean;
@@ -192,8 +171,6 @@ export const AddCardStoreProvider = ({ children }: ProviderProps) => {
     meaningsOfUnknownWords,
     handleSetMeaningsOfUnknownWords,
     isCurrentStep,
-    isPreview,
-    handleSetIsPreview,
     isBlankCard,
     handleSetBlankCard,
     restoreDataToLocalStorage
