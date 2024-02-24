@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 
 import ButtonSearch from "@/components/Add/parts/ButtonSearch";
 
@@ -14,11 +14,18 @@ const searchUnknownWordInGoogle = (unknownWord: string) => {
 };
 
 export default function SelectedWordInput(props: Props) {
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (props.index === 0) inputRef.current?.focus();
+  }, []);
+
   return (
     <div className="bg-default-blue flex mb-2 items-center justify-between rounded-md">
       <div className="px-2">{props.index + 1}.</div>
       <input
         id={props.index.toString()}
+        ref={inputRef}
         type="text"
         className="bg-gray-50 border border-gray-300 text-gray-500 text-sm  focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
         placeholder={props.unKnowWord}
